@@ -90,6 +90,11 @@ test.describe('Omairc landing page', () => {
     await expect(page).toHaveURL(/#install$/);
     await expect(page.getByRole('heading', { name: 'From source' })).toBeInViewport();
 
+    await nav.getByRole('link', { name: 'Feedback' }).click();
+    await expect(page).toHaveURL(/#feedback$/);
+    await expect(page.getByRole('heading', { name: 'Bugs, ideas, and quick chat' })).toBeInViewport();
+    await expect(page.getByRole('link', { name: 'Report a bug' })).toBeVisible();
+
     await nav.getByRole('link', { name: 'omairc' }).click();
     await expect(page).toHaveURL(/#top$/);
     await expect(page.getByRole('heading', { level: 1 })).toBeInViewport();
@@ -106,7 +111,7 @@ test.describe('Omairc landing page', () => {
     await expect.poll(async () => shot.evaluate((el) => el.complete && el.naturalWidth > 0)).toBe(true);
   });
 
-  test('a visitor opens source and issue links in a new tab', async ({ page }) => {
+  test('a visitor opens source and feedback links in a new tab', async ({ page }) => {
     const navGitHub = page.getByRole('navigation').getByRole('link', { name: 'GitHub' });
     await expect(navGitHub).toHaveAttribute('href', 'https://github.com/fredimachado/omairc');
     await expect(navGitHub).toHaveAttribute('target', '_blank');
@@ -117,14 +122,41 @@ test.describe('Omairc landing page', () => {
     await expect(popup).toHaveURL(/github\.com\/fredimachado\/omairc/);
     await popup.close();
 
+    const feedback = page.locator('#feedback');
+    await expect(feedback.getByRole('heading', { name: 'Bugs, ideas, and quick chat' })).toBeVisible();
+    await expect(feedback.getByRole('link', { name: 'Report a bug' })).toHaveAttribute(
+      'href',
+      'https://github.com/fredimachado/omairc/issues/new?template=bug.yml',
+    );
+    await expect(feedback.getByRole('link', { name: 'Suggest something' })).toHaveAttribute(
+      'href',
+      'https://github.com/fredimachado/omairc/issues/new?template=feature.yml',
+    );
+    await expect(feedback.getByRole('link', { name: 'Other feedback' })).toHaveAttribute(
+      'href',
+      'https://github.com/fredimachado/omairc/issues/new?template=feedback.yml',
+    );
+    await expect(feedback.getByRole('link', { name: '#omarchy' })).toHaveAttribute(
+      'href',
+      'https://web.libera.chat/#omarchy',
+    );
+    await expect(feedback.getByRole('link', { name: '#omairc' })).toHaveAttribute(
+      'href',
+      'https://web.libera.chat/#omairc',
+    );
+
     const footer = page.getByRole('contentinfo');
     await expect(footer.getByRole('link', { name: 'GitHub' })).toHaveAttribute(
       'href',
       'https://github.com/fredimachado/omairc',
     );
-    await expect(footer.getByRole('link', { name: 'Issues' })).toHaveAttribute(
+    await expect(footer.getByRole('link', { name: 'Report an issue' })).toHaveAttribute(
       'href',
-      'https://github.com/fredimachado/omairc/issues',
+      'https://github.com/fredimachado/omairc/issues/new/choose',
+    );
+    await expect(footer.getByRole('link', { name: 'Libera' })).toHaveAttribute(
+      'href',
+      'https://web.libera.chat/#omarchy,#omairc',
     );
     await expect(footer.getByRole('link', { name: 'Omarchy' })).toHaveAttribute(
       'href',

@@ -455,6 +455,26 @@
   }
   .footer-links a:hover{ color: var(--text); }
 
+  /* ---------- feedback ---------- */
+  .feedback-actions{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .feedback-chat{
+    margin: 28px 0 0;
+    color: var(--text-dim);
+    font-size: 0.98rem;
+    max-width: 52ch;
+  }
+  .feedback-chat a{
+    color: var(--accent-cyan);
+    font-family: var(--mono);
+    font-size: 0.92rem;
+  }
+  .feedback-chat a:hover{ text-decoration: underline; text-underline-offset: 3px; }
+
   /* ---------- responsive ---------- */
   @media (max-width: 880px){
     .agents-grid{ grid-template-columns: 1fr; }
@@ -490,6 +510,7 @@
       <a href="#agents">Agents</a>
       <a href="#features">Features</a>
       <a href="#install">Install</a>
+      <a href="#feedback">Feedback</a>
       <a class="nav-cta" href="https://github.com/fredimachado/omairc" target="_blank" rel="noopener">
         GitHub
       </a>
@@ -648,6 +669,22 @@
     </div>
   </section>
 
+  <!-- FEEDBACK -->
+  <section id="feedback">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Bugs, ideas, and quick chat</h2>
+        <p>Durable reports go on GitHub. For a fast conversation, find us on Libera.</p>
+      </div>
+      <div class="feedback-actions">
+        <a class="btn btn-primary" href="https://github.com/fredimachado/omairc/issues/new?template=bug.yml" target="_blank" rel="noopener">Report a bug</a>
+        <a class="btn btn-ghost" href="https://github.com/fredimachado/omairc/issues/new?template=feature.yml" target="_blank" rel="noopener">Suggest something</a>
+        <a class="btn btn-ghost" href="https://github.com/fredimachado/omairc/issues/new?template=feedback.yml" target="_blank" rel="noopener">Other feedback</a>
+      </div>
+      <p class="feedback-chat">Chat on Libera in <a href="https://web.libera.chat/#omarchy" target="_blank" rel="noopener">#omarchy</a> or <a href="https://web.libera.chat/#omairc" target="_blank" rel="noopener">#omairc</a>.</p>
+    </div>
+  </section>
+
 </main>
 
 <footer>
@@ -659,7 +696,8 @@
     </div>
     <div class="footer-links">
       <a href="https://github.com/fredimachado/omairc" target="_blank" rel="noopener">GitHub</a>
-      <a href="https://github.com/fredimachado/omairc/issues" target="_blank" rel="noopener">Issues</a>
+      <a href="https://github.com/fredimachado/omairc/issues/new/choose" target="_blank" rel="noopener">Report an issue</a>
+      <a href="https://web.libera.chat/#omarchy,#omairc" target="_blank" rel="noopener">Libera</a>
       <a href="https://omarchy.org" target="_blank" rel="noopener">Omarchy</a>
     </div>
   </div>
