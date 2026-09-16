@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Omairc — A dead-simple IRC client for Omarchy</title>
+<meta name="description" content="Omairc is a dead-simple, AI-friendly IRC client for Omarchy, built with Qt Quick and C++. Agents talk to the running window over a socket. Humans use the same binary.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg: #1a1b26;
+    --bg-raised: #1f202e;
+    --surface: #24283b;
+    --surface-2: #292e42;
+    --border: #363b58;
+    --text: #c0caf5;
+    --text-dim: #737aa2;
+    --text-faint: #4c5178;
+    --accent-cyan: #7dcfff;
+    --accent-purple: #bb9af7;
+    --accent-green: #9ece6a;
+    --accent-pink: #f7768e;
+    --accent-orange: #ff9e64;
+    --mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a{ color: inherit; text-decoration: none; }
+  ::selection{ background: var(--accent-purple); color: #1a1b26; }
+
+  :focus-visible{
+    outline: 2px solid var(--accent-cyan);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  .wrap{
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* ---------- background texture ---------- */
+  .noise-bg{
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background:
+      radial-gradient(1200px 600px at 15% -10%, rgba(125,207,255,0.09), transparent 60%),
+      radial-gradient(1000px 700px at 90% 10%, rgba(187,154,247,0.08), transparent 55%),
+      var(--bg);
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(26,27,38,0.82);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--border);
+  }
+  nav{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px 28px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .logo{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--mono);
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: var(--text);
+  }
+  .logo-glyph{
+    width: 26px;
+    height: 26px;
+    border-radius: 7px;
+    background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+    display: grid;
+    place-items: center;
+    color: #1a1b26;
+    font-size: 0.85rem;
+    font-weight: 800;
+  }
+  .nav-links{
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font-size: 0.92rem;
+    color: var(--text-dim);
+  }
+  .nav-links a:hover{ color: var(--text); }
+  .nav-cta{
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text) !important;
+    font-size: 0.88rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-cta:hover{ border-color: var(--text-dim); background: var(--surface); }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding: 88px 0 72px;
+  }
+  .hero-inner{
+    max-width: 680px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .eyebrow-line{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    color: var(--text-dim);
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    margin-bottom: 22px;
+  }
+  .dot{
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent-green);
+    box-shadow: 0 0 0 3px rgba(158,206,106,0.18);
+  }
+  h1{
+    font-size: clamp(2.3rem, 4.6vw, 3.3rem);
+    line-height: 1.14;
+    letter-spacing: -0.01em;
+    margin: 0 0 22px;
+    font-weight: 700;
+  }
+  .hero p.lede{
+    font-size: 1.12rem;
+    color: var(--text-dim);
+    max-width: 50ch;
+    margin: 0 auto 34px;
+  }
+  .cta-row{
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .btn{
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 22px;
+    border-radius: 9px;
+    font-weight: 600;
+    font-size: 0.96rem;
+    border: 1px solid transparent;
+    cursor: pointer;
+  }
+  .btn-primary{
+    background: var(--text);
+    color: #1a1b26;
+  }
+  .btn-primary:hover{ background: #d7dcf7; }
+  .btn-ghost{
+    border-color: var(--border);
+    color: var(--text);
+  }
+  .btn-ghost:hover{ border-color: var(--text-dim); background: var(--surface); }
+
+  /* ---------- app mock (modelled on the real Omairc window) ---------- */
+  .app-frame{
+    margin: 56px auto 0;
+    max-width: 1000px;
+    padding: 2px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, #7aa2f7, #bb9af7 45%, #f7768e);
+    box-shadow: 0 40px 80px -30px rgba(0,0,0,0.65);
+  }
+  .app-mock{
+    display: grid;
+    grid-template-columns: 208px 1fr 176px;
+    background: var(--bg-raised);
+    border-radius: 18px;
+    overflow: hidden;
+    text-align: left;
+    font-family: var(--mono);
+    min-height: 420px;
+  }
+
+  .app-side{
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    padding: 16px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .net-item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 4px 14px;
+  }
+  .avatar{
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    display: grid;
+    place-items: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #1a1b26;
+    flex-shrink: 0;
+  }
+  .net-name{ font-size: 0.78rem; color: var(--text); font-weight: 600; }
+  .net-status{ font-size: 0.68rem; color: var(--accent-green); display: flex; align-items: center; gap: 5px; }
+  .net-status .d{ width: 6px; height: 6px; border-radius: 50%; background: var(--accent-green); }
+  .side-label{
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+    padding: 10px 8px 6px;
+  }
+  .side-item{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 7px 8px;
+    border-radius: 7px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+  }
+  .side-item.active{
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 600;
+    box-shadow: inset 3px 0 0 var(--accent-cyan);
+  }
+  .side-item .dm-dot{ width: 7px; height: 7px; border-radius: 50%; background: var(--accent-green); margin-left: auto; }
+
+  .app-main{
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .app-header{
+    padding: 14px 22px;
+    border-bottom: 1px solid var(--border);
+  }
+  .app-header .chan-title{ font-size: 0.98rem; font-weight: 700; color: var(--text); }
+  .app-header .chan-topic{ font-size: 0.74rem; color: var(--text-faint); margin-top: 3px; }
+
+  .app-messages{
+    padding: 16px 22px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow: hidden;
+  }
+  .msg-row{ display: flex; gap: 11px; }
+  .msg-row .avatar{ width: 30px; height: 30px; border-radius: 50%; font-size: 0.7rem; }
+  .msg-meta{ display: flex; align-items: baseline; gap: 9px; margin-bottom: 2px; }
+  .msg-meta .who{ font-size: 0.82rem; font-weight: 700; }
+  .msg-meta .when{ font-size: 0.68rem; color: var(--text-faint); }
+  .msg-text{ font-size: 0.82rem; color: var(--text); line-height: 1.55; }
+  .msg-sys{
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--text-faint);
+    font-style: italic;
+  }
+
+  .app-compose{
+    margin: 6px 22px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 10px 10px 16px;
+    background: var(--surface);
+  }
+  .app-compose .ph{ flex: 1; font-size: 0.8rem; color: var(--text-faint); }
+  .app-compose .send{
+    background: var(--accent-cyan);
+    color: #1a1b26;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    padding: 7px 14px;
+    border-radius: 7px;
+  }
+
+  .app-online{
+    background: var(--bg);
+    border-left: 1px solid var(--border);
+    padding: 16px 14px;
+  }
+  .online-label{
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    color: var(--text-faint);
+    margin-bottom: 12px;
+  }
+  .online-item{
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 2px;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+  }
+  .online-item .avatar{ width: 24px; height: 24px; border-radius: 50%; font-size: 0.62rem; }
+
+  @media (max-width: 880px){
+    .app-mock{ grid-template-columns: 1fr; min-height: 0; }
+    .app-side, .app-online{ display: none; }
+  }
+
+  /* ---------- section shell ---------- */
+  section{ padding: 84px 0; border-top: 1px solid var(--border); }
+  .section-head{
+    max-width: 56ch;
+    margin-bottom: 48px;
+  }
+  .section-head h2{
+    font-size: clamp(1.7rem, 3vw, 2.2rem);
+    margin: 0 0 14px;
+    letter-spacing: -0.01em;
+  }
+  .section-head p{
+    color: var(--text-dim);
+    font-size: 1.03rem;
+    margin: 0;
+  }
+
+  /* ---------- agents section ---------- */
+  .agents-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .agents-copy p{ color: var(--text-dim); margin: 0 0 18px; }
+  .agents-copy code.inline{
+    font-family: var(--mono);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 2px 7px;
+    border-radius: 5px;
+    font-size: 0.88em;
+    color: var(--accent-orange);
+  }
+  .cmd-list{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 22px;
+  }
+  .cmd-chip{
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    padding: 6px 11px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--text-dim);
+  }
+  .code-block{
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 22px;
+    font-family: var(--mono);
+    font-size: 0.83rem;
+    overflow-x: auto;
+  }
+  .code-block .l{ padding: 3px 0; white-space: pre; }
+  .code-block .prompt{ color: var(--text-faint); }
+  .code-block .out{ color: var(--accent-green); }
+  .code-block .comment{ color: var(--text-faint); }
+
+  /* ---------- features ---------- */
+  .feature-list{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .feature{
+    background: var(--bg-raised);
+    padding: 30px 26px;
+  }
+  .feature h3{
+    font-size: 1.02rem;
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .feature h3 .mark{ color: var(--accent-cyan); font-family: var(--mono); }
+  .feature p{
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 0.93rem;
+  }
+
+  /* ---------- themes strip ---------- */
+  .theme-strip{
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 28px;
+  }
+  .swatch{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    border: 1px solid var(--border);
+    padding: 7px 12px;
+    border-radius: 999px;
+  }
+  .swatch i{
+    width: 10px; height: 10px; border-radius: 3px; display: inline-block;
+  }
+
+  /* ---------- install ---------- */
+  .install-grid{
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  .install-card{
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+  }
+  .install-card h3{
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+  }
+  .install-card .sub{
+    color: var(--text-faint);
+    font-size: 0.85rem;
+    margin: 0 0 18px;
+  }
+  .step{
+    display: flex;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .step .num{
+    font-family: var(--mono);
+    color: var(--text-faint);
+    font-size: 0.8rem;
+    padding-top: 2px;
+    flex-shrink: 0;
+    width: 16px;
+  }
+  .step code{
+    font-family: var(--mono);
+    font-size: 0.83rem;
+    color: var(--accent-cyan);
+    word-break: break-all;
+  }
+  .install-note{
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin: 18px 0 0;
+  }
+
+  /* ---------- limits ---------- */
+  .limits{
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 30px 32px;
+  }
+  .limits ul{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    columns: 2;
+    column-gap: 40px;
+  }
+  .limits li{
+    color: var(--text-dim);
+    font-size: 0.94rem;
+    padding: 7px 0;
+    break-inside: avoid;
+    display: flex;
+    gap: 10px;
+  }
+  .limits li::before{
+    content: "—";
+    color: var(--text-faint);
+    flex-shrink: 0;
+  }
+
+  /* ---------- footer ---------- */
+  footer{
+    border-top: 1px solid var(--border);
+    padding: 40px 0;
+  }
+  .footer-row{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .footer-row .left{
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: var(--text-faint);
+    font-size: 0.86rem;
+    font-family: var(--mono);
+  }
+  .footer-links{
+    display: flex;
+    gap: 22px;
+    font-size: 0.86rem;
+    color: var(--text-dim);
+  }
+  .footer-links a:hover{ color: var(--text); }
+
+  /* ---------- responsive ---------- */
+  @media (max-width: 880px){
+    .agents-grid{ grid-template-columns: 1fr; }
+    .feature-list{ grid-template-columns: 1fr 1fr; }
+    .install-grid{ grid-template-columns: 1fr; }
+    .limits ul{ columns: 1; }
+    .nav-links{ display: none; }
+  }
+  @media (max-width: 520px){
+    .feature-list{ grid-template-columns: 1fr; }
+    h1{ font-size: 2rem; }
+  }
+</style>
+</head>
+<body>
+<div class="noise-bg"></div>
+
+<header>
+  <nav>
+    <a href="#top" class="logo">
+      <span class="logo-glyph">Oi</span>
+      omairc
+    </a>
+    <div class="nav-links">
+      <a href="#agents">Agents</a>
+      <a href="#features">Features</a>
+      <a href="#install">Install</a>
+      <a class="nav-cta" href="https://github.com/fredimachado/omairc" target="_blank" rel="noopener">
+        GitHub
+      </a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero" style="border-top:none; padding-top:96px;">
+    <div class="wrap">
+      <div class="hero-inner">
+        <div class="eyebrow-line">
+          <span class="dot"></span>
+          Built for Omarchy
+        </div>
+        <h1>A dead-simple IRC client, for humans and their agents.</h1>
+        <p class="lede">Omairc is a small Qt Quick app that runs one window for you and your agent to share. You chat in it. Your agent scripts it over a socket. Nobody has to leave the room.</p>
+        <div class="cta-row">
+          <a href="#install" class="btn btn-primary">Get Omairc</a>
+          <a href="https://github.com/fredimachado/omairc" target="_blank" rel="noopener" class="btn btn-ghost">View source</a>
+        </div>
+      </div>
+
+      <div class="app-frame" role="img" aria-label="Omairc's window, showing the omairc channel with several members, a message from an agent that just diagnosed a build failure, and the online member list on the right.">
+        <div class="app-mock">
+          <div class="app-side">
+            <div class="net-item">
+              <span class="avatar" style="background:#e0af68;">L</span>
+              <div>
+                <div class="net-name">irc.libera.chat</div>
+                <div class="net-status"><span class="d"></span>Connected</div>
+              </div>
+            </div>
+            <div class="side-label">CHANNELS</div>
+            <div class="side-item"># omarchy</div>
+            <div class="side-item active"># omairc</div>
+            <div class="side-label">DIRECT MESSAGES</div>
+            <div class="side-item">fredi_<span class="dm-dot"></span></div>
+          </div>
+
+          <div class="app-main">
+            <div class="app-header">
+              <div class="chan-title"># omairc</div>
+              <div class="chan-topic">agent-friendly IRC client for Omarchy · github.com/fredimachado/omairc</div>
+            </div>
+            <div class="app-messages">
+              <div class="msg-row">
+                <span class="avatar" style="background:var(--accent-cyan);">F</span>
+                <div>
+                  <div class="msg-meta"><span class="who" style="color:var(--accent-cyan);">fredi</span><span class="when">14:03</span></div>
+                  <div class="msg-text">anyone know why the build is failing on aarch64?</div>
+                </div>
+              </div>
+              <div class="msg-row">
+                <span class="avatar" style="background:var(--accent-purple);">A</span>
+                <div>
+                  <div class="msg-meta"><span class="who" style="color:var(--accent-purple);">agent</span><span class="when">14:04</span></div>
+                  <div class="msg-text">it's the qtkeychain submodule — pinned commit is missing on that runner. pushing a fix and rerunning ci now.</div>
+                </div>
+              </div>
+              <div class="msg-sys">outfoxxed joined #omairc</div>
+              <div class="msg-row">
+                <span class="avatar" style="background:var(--accent-green);">O</span>
+                <div>
+                  <div class="msg-meta"><span class="who" style="color:var(--accent-green);">outfoxxed</span><span class="when">14:06</span></div>
+                  <div class="msg-text">nice catch, that would've taken me an hour to find</div>
+                </div>
+              </div>
+            </div>
+            <div class="app-compose">
+              <span class="ph">Message #omairc</span>
+              <span class="send">SEND</span>
+            </div>
+          </div>
+
+          <div class="app-online">
+            <div class="online-label">ONLINE — 4</div>
+            <div class="online-item"><span class="avatar" style="background:var(--accent-cyan);">F</span>fredi</div>
+            <div class="online-item"><span class="avatar" style="background:var(--accent-purple);">A</span>agent</div>
+            <div class="online-item"><span class="avatar" style="background:var(--accent-green);">O</span>outfoxxed</div>
+            <div class="online-item"><span class="avatar" style="background:var(--accent-orange);">D</span>dhh</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- AGENTS -->
+  <section id="agents">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>One window, one socket, no second client</h2>
+        <p>While the window is running, the same binary doubles as a CLI. It prints one JSON line and exits, so an agent can read a channel, check status, or send a message without ever opening its own connection.</p>
+      </div>
+      <div class="agents-grid">
+        <div class="agents-copy">
+          <p>Everything happens over <code class="inline">$XDG_RUNTIME_DIR/omairc.sock</code>. Your agent asks the running window for what it needs — recent messages, unread counts, the list of connections — and the window answers. Nothing it does clears your badges or steals your selected conversation.</p>
+          <p>That means you can be mid-conversation in a channel while your agent quietly checks a different one, replies, and gets out of the way.</p>
+          <div class="cmd-list">
+            <span class="cmd-chip">connections</span>
+            <span class="cmd-chip">status</span>
+            <span class="cmd-chip">send</span>
+            <span class="cmd-chip">conversations</span>
+            <span class="cmd-chip">read</span>
+            <span class="cmd-chip">names</span>
+            <span class="cmd-chip">raise</span>
+          </div>
+        </div>
+        <div class="code-block">
+          <div class="l"><span class="prompt">$</span> omairc read '#omarchy' --since 5m</div>
+          <div class="l comment">// last 5 minutes, as JSON</div>
+          <div class="l">&nbsp;</div>
+          <div class="l"><span class="prompt">$</span> omairc send --network libera '#omarchy' \</div>
+          <div class="l">&nbsp;&nbsp;&nbsp;&nbsp;"pushed a fix, rerunning ci"</div>
+          <div class="l"><span class="out">{"ok":true}</span></div>
+          <div class="l">&nbsp;</div>
+          <div class="l"><span class="prompt">$</span> omairc read --unread</div>
+          <div class="l comment">// only what you haven't seen</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Everything you'd want from an IRC client</h2>
+        <p>Omairc keeps the feature set an IRC regular expects, without the plugin sprawl older clients accumulate.</p>
+      </div>
+
+      <div class="feature-list">
+        <div class="feature">
+          <h3><span class="mark">#</span>Several networks, one window</h3>
+          <p>Each network keeps its own channels, DMs, nick, and connection state, plus a status console for the handshake and errors.</p>
+        </div>
+        <div class="feature">
+          <h3><span class="mark">#</span>Keyboard first</h3>
+          <p>Ctrl+K to jump, Ctrl+Shift+K for nick, Alt+A to the next unread, Ctrl+F to find, tab to complete a nick, and drafts that stay put per conversation.</p>
+        </div>
+        <div class="feature">
+          <h3><span class="mark">#</span>Slash commands</h3>
+          <p>The usual set, plus /ignore, /mute, /highlight, and CTCP /ping, /time, /version — replies land right in the asking transcript.</p>
+        </div>
+        <div class="feature">
+          <h3><span class="mark">#</span>Notifications that behave</h3>
+          <p>A mention or DM while the window is unfocused raises a desktop notification. Clicking it raises the window and opens that conversation.</p>
+        </div>
+        <div class="feature">
+          <h3><span class="mark">#</span>Backlog on arrival</h3>
+          <p>Channels ask for their last 100 lines over CHATHISTORY, a bouncer's playback folds in on attach, and a restart reloads recent history as muted backlog.</p>
+        </div>
+        <div class="feature">
+          <h3><span class="mark">#</span>Modern IRCv3</h3>
+          <p>SASL, STS, echo-message, server-time, multi-prefix, away-notify, message-tags, batch, chathistory — with reconnects that back off politely.</p>
+        </div>
+        <div class="feature">
+          <h3><span class="mark">#</span>Secrets stay secret</h3>
+          <p>Passwords and NickServ secrets go through QtKeychain into your system's Secret Service. Without one, they stay session-only, and Connect says so.</p>
+        </div>
+        <div class="feature">
+          <h3><span class="mark">#</span>One process</h3>
+          <p>A second launch just raises the existing window instead of opening a duplicate — the way a well-behaved desktop app should.</p>
+        </div>
+        <div class="feature">
+          <h3><span class="mark">#</span>Dressed in your theme</h3>
+          <p>Colors follow whatever Omarchy theme is active and update live, right down to the bundled iA Writer Mono type.</p>
+          <div class="theme-strip">
+            <span class="swatch"><i style="background:#7dcfff"></i>Tokyo Night</span>
+            <span class="swatch"><i style="background:#e0af68"></i>Gruvbox</span>
+            <span class="swatch"><i style="background:#9ece6a"></i>Everforest</span>
+            <span class="swatch"><i style="background:#bb9af7"></i>Rosé Pine</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALL -->
+  <section id="install">
+    <div class="wrap">
+      <div class="section-head">
+        <h2>Get it running</h2>
+        <p>On Omarchy or another Arch-based system, pick whichever path fits how you like to install things.</p>
+      </div>
+
+      <div class="install-grid">
+        <div class="install-card">
+          <h3>From source</h3>
+          <p class="sub">Clones the repo and runs the install script as your regular user.</p>
+          <div class="step"><span class="num">1</span><code>git clone https://github.com/fredimachado/omairc.git</code></div>
+          <div class="step"><span class="num">2</span><code>cd omairc</code></div>
+          <div class="step"><span class="num">3</span><code>./bin/install</code></div>
+          <p class="install-note">makepkg calls sudo itself when it needs to — you don't have to.</p>
+        </div>
+
+        <div class="install-card">
+          <h3>From a release package</h3>
+          <p class="sub">Grab the latest .pkg.tar.zst and install it directly, or track updates through pacman.</p>
+          <div class="step"><span class="num">1</span><code>sudo pacman -U omairc-*.pkg.tar.zst</code></div>
+          <div class="step"><span class="num">2</span><code>omarchy pkg add omairc</code></div>
+          <p class="install-note">The second option works straight from the Omarchy menu — no repo config needed.</p>
+        </div>
+      </div>
+
+      <div class="limits" style="margin-top:40px;">
+        <h3 style="margin:0 0 16px; font-size:1.02rem;">Worth knowing before you switch</h3>
+        <ul>
+          <li>SASL is PLAIN only — no separate SASL account or bouncer-network fields in Connect</li>
+          <li>No DCC, file transfer, voice, video, plugins, or scripts</li>
+          <li>No Soju or ZNC history-sync protocol, though server history over CHATHISTORY works</li>
+          <li>The local CLI controls the running window — it isn't a second IRC client</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <div class="left">
+      <span>omairc</span>
+      <span>·</span>
+      <span>MIT licensed</span>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/fredimachado/omairc" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/fredimachado/omairc/issues" target="_blank" rel="noopener">Issues</a>
+      <a href="https://omarchy.org" target="_blank" rel="noopener">Omarchy</a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
