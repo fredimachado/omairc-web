@@ -156,7 +156,7 @@ test.describe('Omairc landing page', () => {
     );
     await expect(footer.getByRole('link', { name: 'Libera' })).toHaveAttribute(
       'href',
-      'https://web.libera.chat/#omarchy,#omairc',
+      'https://web.libera.chat/#omairc,#omarchy',
     );
     await expect(footer.getByRole('link', { name: 'Omarchy' })).toHaveAttribute(
       'href',
@@ -175,14 +175,19 @@ test.describe('Omairc landing page', () => {
     await expect(page.getByRole('heading', { name: 'Get it running' })).toBeInViewport();
   });
 
-  test('a phone visitor still reaches install without the desktop chrome', async ({ page }) => {
+  test('a phone visitor opens the menu and reaches install', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.reload();
 
-    await expect(page.getByRole('navigation').getByRole('link', { name: 'Agents' })).toBeHidden();
+    const nav = page.getByRole('navigation');
+    await expect(nav.getByRole('link', { name: 'Agents' })).toBeHidden();
     await expect(page.getByRole('img', { name: 'Omairc' })).toBeVisible();
 
-    await page.getByRole('link', { name: 'Get Omairc' }).click();
+    await nav.getByRole('button', { name: 'Menu' }).click();
+    await expect(nav.getByRole('link', { name: 'Agents' })).toBeVisible();
+
+    await nav.getByRole('link', { name: 'Install' }).click();
+    await expect(page).toHaveURL(/#install$/);
     await expect(page.getByRole('heading', { name: 'Get it running' })).toBeInViewport();
     await expect(page.getByRole('heading', { name: 'From a release package' })).toBeVisible();
   });

@@ -117,6 +117,39 @@
     gap: 8px;
   }
   .nav-cta:hover{ border-color: var(--text-dim); background: var(--surface); }
+  .nav-toggle{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+  }
+  .nav-toggle:hover{ border-color: var(--text-dim); background: var(--surface); }
+  .nav-toggle-bars{
+    position: relative;
+    width: 16px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+  }
+  .nav-toggle-bars::before,
+  .nav-toggle-bars::after{
+    content: "";
+    position: absolute;
+    left: 0;
+    width: 16px;
+    height: 2px;
+    background: currentColor;
+    border-radius: 1px;
+  }
+  .nav-toggle-bars::before{ top: -5px; }
+  .nav-toggle-bars::after{ top: 5px; }
 
   /* ---------- hero ---------- */
   .hero{
@@ -480,7 +513,21 @@
     .agents-grid{ grid-template-columns: 1fr; }
     .feature-list{ grid-template-columns: 1fr 1fr; }
     .install-grid{ grid-template-columns: 1fr; }
-    .nav-links{ display: none; }
+    nav{ flex-wrap: wrap; }
+    .nav-toggle{ display: inline-flex; }
+    .nav-links{
+      display: none;
+      flex-basis: 100%;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0;
+      padding-top: 8px;
+      margin-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+    header.nav-open .nav-links{ display: flex; }
+    .nav-links a{ padding: 10px 0; }
+    .nav-cta{ margin-top: 4px; justify-content: center; }
   }
   @media (max-width: 520px){
     .feature-list{ grid-template-columns: 1fr; }
@@ -506,7 +553,11 @@
       <img class="logo-glyph" src="omairc.svg" alt="" width="26" height="26">
       omairc
     </a>
-    <div class="nav-links">
+    <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span class="sr-only">Menu</span>
+      <span class="nav-toggle-bars" aria-hidden="true"></span>
+    </button>
+    <div class="nav-links" id="site-nav">
       <a href="#agents">Agents</a>
       <a href="#features">Features</a>
       <a href="#install">Install</a>
@@ -681,7 +732,7 @@
         <a class="btn btn-ghost" href="https://github.com/fredimachado/omairc/issues/new?template=feature.yml" target="_blank" rel="noopener">Suggest something</a>
         <a class="btn btn-ghost" href="https://github.com/fredimachado/omairc/issues/new?template=feedback.yml" target="_blank" rel="noopener">Other feedback</a>
       </div>
-      <p class="feedback-chat">Chat on Libera in <a href="https://web.libera.chat/#omarchy" target="_blank" rel="noopener">#omarchy</a> or <a href="https://web.libera.chat/#omairc" target="_blank" rel="noopener">#omairc</a>.</p>
+      <p class="feedback-chat">Chat on Libera in <a href="https://web.libera.chat/#omairc" target="_blank" rel="noopener">#omairc</a> or <a href="https://web.libera.chat/#omarchy" target="_blank" rel="noopener">#omarchy</a>.</p>
     </div>
   </section>
 
@@ -697,7 +748,7 @@
     <div class="footer-links">
       <a href="https://github.com/fredimachado/omairc" target="_blank" rel="noopener">GitHub</a>
       <a href="https://github.com/fredimachado/omairc/issues/new/choose" target="_blank" rel="noopener">Report an issue</a>
-      <a href="https://web.libera.chat/#omarchy,#omairc" target="_blank" rel="noopener">Libera</a>
+      <a href="https://web.libera.chat/#omairc,#omarchy" target="_blank" rel="noopener">Libera</a>
       <a href="https://omarchy.org" target="_blank" rel="noopener">Omarchy</a>
     </div>
   </div>
@@ -708,6 +759,35 @@
 <script>
 (function () {
   const status = document.getElementById('copy-status');
+  const header = document.querySelector('header');
+  const navToggle = document.querySelector('.nav-toggle');
+  const siteNav = document.getElementById('site-nav');
+
+  function setNavOpen(open) {
+    if (!header || !navToggle) return;
+    header.classList.toggle('nav-open', open);
+    navToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+  }
+
+  if (navToggle && siteNav) {
+    navToggle.addEventListener('click', function () {
+      setNavOpen(!header.classList.contains('nav-open'));
+    });
+
+    siteNav.querySelectorAll('a[href^="#"]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        setNavOpen(false);
+      });
+    });
+
+    document.addEventListener('keydown', function (event) {
+      if (event.key === 'Escape') setNavOpen(false);
+    });
+
+    window.matchMedia('(min-width: 881px)').addEventListener('change', function (event) {
+      if (event.matches) setNavOpen(false);
+    });
+  }
 
   // install.sh is served from this same deployment, so build the one-liner
   // from the origin the visitor is actually on. A custom domain, a preview
