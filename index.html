@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Omairc — A dead-simple IRC client for Omarchy</title>
+<title>Omairc: A dead-simple IRC client for Omarchy</title>
 <meta name="description" content="Omairc is a dead-simple, AI-friendly IRC client for Omarchy, built with Qt Quick and C++. Agents talk to the running window over a socket. Humans use the same binary.">
 <link rel="icon" href="omairc.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -648,16 +648,20 @@
 
       <div class="feature-list">
         <div class="feature">
-          <h3><span class="mark">#</span>Several networks, one window</h3>
-          <p>Each network keeps its own channels, DMs, nick, and connection state, plus a status console for the handshake and errors.</p>
-        </div>
-        <div class="feature">
           <h3><span class="mark">#</span>Keyboard first</h3>
           <p>Ctrl+K to jump, Ctrl+Shift+K for nick, Alt+A to the next unread, Ctrl+F to find, tab to complete a nick, and drafts that stay put per conversation.</p>
         </div>
         <div class="feature">
+          <h3><span class="mark">#</span>Modern IRCv3</h3>
+          <p>SASL, STS, echo-message, server-time, multi-prefix, away-notify, message-tags, batch, chathistory, with reconnects that back off politely.</p>
+        </div>
+        <div class="feature">
+          <h3><span class="mark">#</span>Several networks, one window</h3>
+          <p>Each network keeps its own channels, DMs, nick, and connection state, plus a status console for the handshake and errors.</p>
+        </div>
+        <div class="feature">
           <h3><span class="mark">#</span>Slash commands</h3>
-          <p>The usual set, plus /ignore, /mute, /highlight, and CTCP /ping, /time, /version — replies land right in the asking transcript.</p>
+          <p>The usual set, plus /ignore, /mute, /highlight, and CTCP /ping, /time, /version. Replies land right in the asking transcript.</p>
         </div>
         <div class="feature">
           <h3><span class="mark">#</span>Notifications that behave</h3>
@@ -668,16 +672,12 @@
           <p>Channels ask for their last 100 lines over CHATHISTORY, a bouncer's playback folds in on attach, and a restart reloads recent history as muted backlog.</p>
         </div>
         <div class="feature">
-          <h3><span class="mark">#</span>Modern IRCv3</h3>
-          <p>SASL, STS, echo-message, server-time, multi-prefix, away-notify, message-tags, batch, chathistory — with reconnects that back off politely.</p>
-        </div>
-        <div class="feature">
           <h3><span class="mark">#</span>Secrets stay secret</h3>
           <p>Passwords and NickServ secrets go through QtKeychain into your system's Secret Service. Without one, they stay session-only, and Connect says so.</p>
         </div>
         <div class="feature">
           <h3><span class="mark">#</span>One process</h3>
-          <p>A second launch just raises the existing window instead of opening a duplicate — the way a well-behaved desktop app should.</p>
+          <p>A second launch just raises the existing window instead of opening a duplicate, the way a well-behaved desktop app should.</p>
         </div>
         <div class="feature">
           <h3><span class="mark">#</span>Dressed in your theme</h3>
@@ -709,7 +709,7 @@
           <div class="step"><span class="num">1</span><code>git clone https://github.com/fredimachado/omairc.git</code><button class="copy" type="button" data-copy aria-label="Copy the git clone command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
           <div class="step"><span class="num">2</span><code>cd omairc</code><button class="copy" type="button" data-copy aria-label="Copy the cd command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
           <div class="step"><span class="num">3</span><code>./bin/install</code><button class="copy" type="button" data-copy aria-label="Copy the install script command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
-          <p class="install-note">makepkg calls sudo itself when it needs to — you don't have to.</p>
+          <p class="install-note">makepkg calls sudo itself when it needs to. You don't have to.</p>
         </div>
 
         <div class="install-card">
@@ -717,7 +717,7 @@
           <p class="sub">Grab the latest .pkg.tar.zst and install it directly, or track updates through pacman.</p>
           <div class="step"><span class="num">1</span><code>sudo pacman -U omairc-*.pkg.tar.zst</code><button class="copy" type="button" data-copy aria-label="Copy the pacman install command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
           <div class="step"><span class="num">2</span><code>omarchy pkg add omairc</code><button class="copy" type="button" data-copy aria-label="Copy the omarchy pkg command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
-          <p class="install-note">The second option works straight from the Omarchy menu — no repo config needed.</p>
+          <p class="install-note">The second option works straight from the Omarchy menu. No repo config needed.</p>
         </div>
       </div>
     </div>
