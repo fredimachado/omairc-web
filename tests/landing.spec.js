@@ -28,13 +28,18 @@ test.describe('Omairc landing page', () => {
     const button = page.getByRole('button', { name: 'Copy the one-line install command' });
     await expect(button).toBeVisible();
 
+    // The command names this deployment, not the GitHub copy, so it is built
+    // from the origin the visitor is on rather than hardcoded.
+    const command = `curl -fsSL ${new URL(page.url()).origin}/install.sh | sh`;
+    const code = page.locator('code.install-cmd');
+    await expect(code).toHaveText(command);
+    await expect(code).not.toContainText('raw.githubusercontent.com');
+
     await button.click();
 
     await expect(button).toHaveClass(/copied/);
     await expect(page.getByRole('status')).toHaveText('Copied to clipboard');
-    await expect
-      .poll(() => page.evaluate(() => navigator.clipboard.readText()))
-      .toBe('curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/master/install.sh | sh');
+    await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(command);
   });
 
   test('a visitor copies each install step command', async ({ page, context }) => {

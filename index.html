@@ -624,7 +624,7 @@
         <div class="install-card primary">
           <h3>One command <span class="tag">recommended</span></h3>
           <p class="sub">Adds the pacman repository pointed at the latest GitHub release, then installs it.</p>
-          <div class="step"><span class="num">$</span><code>curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/master/install.sh | sh</code><button class="copy" type="button" data-copy aria-label="Copy the one-line install command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
+          <div class="step"><span class="num">$</span><code class="install-cmd">curl -fsSL https://omairc-web.pages.dev/install.sh | sh</code><button class="copy" type="button" data-copy aria-label="Copy the one-line install command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
           <p class="install-note">Safe to re-run: the repository is only added once, and later runs upgrade to the newest release, so from then on upgrades run through pacman as usual. Read <a href="https://github.com/fredimachado/omairc/blob/master/install.sh" target="_blank" rel="noopener">install.sh</a> before piping it if you prefer.</p>
         </div>
 
@@ -670,6 +670,15 @@
 <script>
 (function () {
   const status = document.getElementById('copy-status');
+
+  // install.sh is served from this same deployment, so build the one-liner
+  // from the origin the visitor is actually on. A custom domain, a preview
+  // URL, and the local test server all get a command that works. The markup
+  // holds the pages.dev URL for the no-JavaScript case.
+  const installCmd = document.querySelector('code.install-cmd');
+  if (installCmd && location.origin && location.origin !== 'null') {
+    installCmd.textContent = 'curl -fsSL ' + location.origin + '/install.sh | sh';
+  }
 
   function legacyCopy(text) {
     const field = document.createElement('textarea');
