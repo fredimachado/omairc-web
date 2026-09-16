@@ -18,6 +18,7 @@ test.describe('Omairc landing page', () => {
     await expect(page.getByRole('heading', { name: 'Get it running' })).toBeInViewport();
     await expect(page.getByText('git clone https://github.com/fredimachado/omairc.git')).toBeVisible();
     await expect(page.getByText('sudo pacman -U omairc-*.pkg.tar.zst')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Worth knowing before you switch' })).toHaveCount(0);
   });
 
   test('a visitor jumps between sections from the nav', async ({ page }) => {
@@ -40,20 +41,14 @@ test.describe('Omairc landing page', () => {
     await nav.getByRole('link', { name: 'omairc' }).click();
     await expect(page).toHaveURL(/#top$/);
     await expect(page.getByRole('heading', { level: 1 })).toBeInViewport();
+    await expect(nav.getByRole('link', { name: 'omairc' }).locator('img')).toHaveAttribute('src', 'omairc.svg');
   });
 
-  test('a visitor reads the window mock and sees an agent in the channel', async ({ page }) => {
-    const mock = page.getByRole('img', {
-      name: /Omairc's window, showing the omairc channel/,
-    });
-
-    await expect(mock).toBeVisible();
-    await expect(page.getByText('anyone know why the build is failing on aarch64?')).toBeVisible();
-    await expect(page.getByText(/it's the qtkeychain submodule/)).toBeVisible();
-    await expect(page.getByText('nice catch, that would\'ve taken me an hour to find')).toBeVisible();
-    await expect(page.getByText('outfoxxed joined #omairc')).toBeVisible();
-    await expect(page.locator('.app-messages .who', { hasText: /^agent$/ })).toBeVisible();
-    await expect(page.locator('.online-item').filter({ hasText: 'agent' })).toBeVisible();
+  test('a visitor sees a recording of Omairc in the hero', async ({ page }) => {
+    const shot = page.getByRole('img', { name: 'Omairc' });
+    await expect(shot).toBeVisible();
+    await expect(shot).toHaveAttribute('src', 'omairc-site.gif');
+    await expect.poll(async () => shot.evaluate((el) => el.complete && el.naturalWidth > 0)).toBe(true);
   });
 
   test('a visitor opens source and issue links in a new tab', async ({ page }) => {
@@ -98,8 +93,7 @@ test.describe('Omairc landing page', () => {
     await page.reload();
 
     await expect(page.getByRole('navigation').getByRole('link', { name: 'Agents' })).toBeHidden();
-    await expect(page.getByText('CHANNELS', { exact: true })).toBeHidden();
-    await expect(page.getByText('ONLINE — 4', { exact: true })).toBeHidden();
+    await expect(page.getByRole('img', { name: 'Omairc' })).toBeVisible();
 
     await page.getByRole('link', { name: 'Get Omairc' }).click();
     await expect(page.getByRole('heading', { name: 'Get it running' })).toBeInViewport();
