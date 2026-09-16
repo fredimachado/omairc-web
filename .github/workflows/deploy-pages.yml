@@ -1,0 +1,83 @@
+name: Deploy to Cloudflare Pages
+
+# Manual only. No push or pull request reaches the live site, so a deploy
+# happens exactly when someone runs this workflow from the Actions tab.
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-pages
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+  deployments: write
+
+env:
+  # Rename if your Cloudflare Pages project is called something else.
+  PAGES_PROJECT: omairc-web
+  # The installer published in the omairc repo, fetched fresh on every deploy
+  # so the site never serves a checked-in copy that has fallen behind.
+  INSTALL_URL: https://raw.githubusercontent.com/fredimachado/omairc/master/install.sh
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      # The site is plain HTML and one image. List anything new here, or it
+      # will be missing from the upload. install.sh is added by the next step.
+      - name: Stage the site
+        run: |
+          set -euo pipefail
+          mkdir -p dist
+          cp index.html omairc.svg dist/
+
+      # A 404 or a proxy's error page would curl in happily, so check the
+      # bytes before they are uploaded as a shell script users pipe into sh.
+      - name: Fetch the latest installer
+        id: installer
+        run: |
+          set -euo pipefail
+          curl -fsSL --retry 3 --retry-delay 2 --retry-connrefused \
+            "$INSTALL_URL" -o dist/install.sh
+          test -s dist/install.sh
+          head -n 1 dist/install.sh | grep -q '^#!' || {
+            echo "install.sh does not start with a shebang:" >&2
+            head -n 5 dist/install.sh >&2
+            exit 1
+          }
+          SHA=$(sha256sum dist/install.sh | cut -d' ' -f1)
+          echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
+          echo "install.sh sha256: $SHA"
+          ls -la dist
+
+      - name: Deploy
+        id: deploy
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # The branch label decides production vs preview: it must match the
+          # project's production branch to replace the live site, and any
+          # other value publishes to a preview URL instead.
+          command: pages deploy dist --project-name=${{ env.PAGES_PROJECT }} --branch=${{ github.ref_name }}
+          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Summarize
+        run: |
+          {
+            echo "### Cloudflare Pages deployment"
+            echo
+            echo "- Project: \`${{ env.PAGES_PROJECT }}\`"
+            echo "- Branch: \`${{ github.ref_name }}\`"
+            echo "- URL: ${{ steps.deploy.outputs.deployment-url }}"
+            echo "- Alias: ${{ steps.deploy.outputs.pages-deployment-alias-url }}"
+            echo "- install.sh sha256: \`${{ steps.installer.outputs.sha256 }}\`"
+          } >> "$GITHUB_STEP_SUMMARY"

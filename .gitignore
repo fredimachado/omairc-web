@@ -3,3 +3,7 @@ test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
+
+# Deploy staging. install.sh is fetched from the omairc repo at deploy time, so
+# a copy here would only ever be a stale one.
+dist/
