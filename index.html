@@ -246,6 +246,9 @@
     max-width: 56ch;
     margin-bottom: 48px;
   }
+  .section-head.wide{
+    max-width: none;
+  }
   .section-head h2{
     font-size: clamp(1.7rem, 3vw, 2.2rem);
     margin: 0 0 14px;
@@ -298,6 +301,7 @@
     overflow-x: auto;
   }
   .code-block .l{ padding: 3px 0; white-space: pre; }
+  .code-block .l.blank{ padding: 0; height: 0.80em; overflow: hidden; }
   .code-block .prompt{ color: var(--text-faint); }
   .code-block .out{ color: var(--accent-green); }
   .code-block .comment{ color: var(--text-faint); }
@@ -604,14 +608,14 @@
   <!-- AGENTS -->
   <section id="agents">
     <div class="wrap">
-      <div class="section-head">
+      <div class="section-head wide">
         <h2>One window, one socket, no second client</h2>
-        <p>While the window is running, the same binary doubles as a CLI. It prints one JSON line and exits, so an agent can read a channel, check status, or send a message without ever opening its own connection.</p>
+        <p>While the window is open, the same binary is also a CLI. It prints one JSON line and exits. An agent can read a channel, check status, or send a message without its own IRC connection.</p>
       </div>
       <div class="agents-grid">
         <div class="agents-copy">
-          <p>Everything happens over <code class="inline">$XDG_RUNTIME_DIR/omairc.sock</code>. Your agent asks the running window for what it needs — recent messages, unread counts, the list of connections — and the window answers. Nothing it does clears your badges or steals your selected conversation.</p>
-          <p>That means you can be mid-conversation in a channel while your agent quietly checks a different one, replies, and gets out of the way.</p>
+          <p>Your agent talks to the running window. It can fetch recent messages, unread counts, or connections without clearing your badges or changing which conversation you have open.</p>
+          <p>Keep chatting in one channel while your agent checks another, replies, and leaves.</p>
           <div class="cmd-list">
             <span class="cmd-chip">connections</span>
             <span class="cmd-chip">status</span>
@@ -625,11 +629,11 @@
         <div class="code-block">
           <div class="l"><span class="prompt">$</span> omairc read '#omarchy' --since 5m</div>
           <div class="l comment">// last 5 minutes, as JSON</div>
-          <div class="l">&nbsp;</div>
+          <div class="l blank">&nbsp;</div>
           <div class="l"><span class="prompt">$</span> omairc send --network libera '#omarchy' \</div>
           <div class="l">&nbsp;&nbsp;&nbsp;&nbsp;"pushed a fix, rerunning ci"</div>
           <div class="l"><span class="out">{"ok":true}</span></div>
-          <div class="l">&nbsp;</div>
+          <div class="l blank">&nbsp;</div>
           <div class="l"><span class="prompt">$</span> omairc read --unread</div>
           <div class="l comment">// only what you haven't seen</div>
         </div>
