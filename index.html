@@ -333,8 +333,26 @@
     font-size: 0.85rem;
     margin: 0 0 18px;
   }
+  .install-card.primary{
+    grid-column: 1 / -1;
+    border-color: rgba(125,207,255,0.42);
+    background: linear-gradient(180deg, rgba(125,207,255,0.07), rgba(125,207,255,0) 65%), var(--bg-raised);
+  }
+  .install-card h3 .tag{
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent-cyan);
+    border: 1px solid rgba(125,207,255,0.35);
+    border-radius: 999px;
+    padding: 3px 9px;
+    vertical-align: 2px;
+  }
   .step{
     display: flex;
+    align-items: flex-start;
     gap: 12px;
     margin-bottom: 14px;
   }
@@ -351,11 +369,62 @@
     font-size: 0.83rem;
     color: var(--accent-cyan);
     word-break: break-all;
+    flex: 1;
+    min-width: 0;
+  }
+  .copy{
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    margin-top: -3px;
+    padding: 0;
+    background: none;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--text-faint);
+    cursor: pointer;
+    transition: color 120ms, border-color 120ms, background 120ms;
+  }
+  .copy:hover{
+    color: var(--text);
+    border-color: var(--text-dim);
+    background: var(--surface);
+  }
+  .copy.copied{
+    color: var(--accent-green);
+    border-color: rgba(158,206,106,0.45);
+  }
+  .copy svg{
+    width: 14px;
+    height: 14px;
+    display: block;
+  }
+  .copy .icon-check{ display: none; }
+  .copy.copied .icon-copy{ display: none; }
+  .copy.copied .icon-check{ display: block; }
+  .sr-only{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
   }
   .install-note{
     color: var(--text-dim);
     font-size: 0.9rem;
     margin: 18px 0 0;
+  }
+  .install-note a{
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
   }
 
   /* ---------- footer ---------- */
@@ -400,6 +469,15 @@
 </style>
 </head>
 <body>
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="icon-copy" viewBox="0 0 24 24">
+    <rect x="9" y="9" width="11" height="11" rx="2.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M5.5 15H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v.5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+  <symbol id="icon-check" viewBox="0 0 24 24">
+    <path d="M20 6.5 9.5 17 4 11.5" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  </symbol>
+</svg>
 <div class="noise-bg"></div>
 
 <header>
@@ -539,24 +617,31 @@
     <div class="wrap">
       <div class="section-head">
         <h2>Get it running</h2>
-        <p>On Omarchy or another Arch-based system, pick whichever path fits how you like to install things.</p>
+        <p>On Omarchy or another Arch-based system, one command installs the latest release. Pick one of the other paths if you'd rather build it yourself.</p>
       </div>
 
       <div class="install-grid">
+        <div class="install-card primary">
+          <h3>One command <span class="tag">recommended</span></h3>
+          <p class="sub">Adds the pacman repository pointed at the latest GitHub release, then installs it.</p>
+          <div class="step"><span class="num">$</span><code>curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/master/install.sh | sh</code><button class="copy" type="button" data-copy aria-label="Copy the one-line install command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
+          <p class="install-note">Safe to re-run: the repository is only added once, and later runs upgrade to the newest release, so from then on upgrades run through pacman as usual. Read <a href="https://github.com/fredimachado/omairc/blob/master/install.sh" target="_blank" rel="noopener">install.sh</a> before piping it if you prefer.</p>
+        </div>
+
         <div class="install-card">
           <h3>From source</h3>
           <p class="sub">Clones the repo and runs the install script as your regular user.</p>
-          <div class="step"><span class="num">1</span><code>git clone https://github.com/fredimachado/omairc.git</code></div>
-          <div class="step"><span class="num">2</span><code>cd omairc</code></div>
-          <div class="step"><span class="num">3</span><code>./bin/install</code></div>
+          <div class="step"><span class="num">1</span><code>git clone https://github.com/fredimachado/omairc.git</code><button class="copy" type="button" data-copy aria-label="Copy the git clone command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
+          <div class="step"><span class="num">2</span><code>cd omairc</code><button class="copy" type="button" data-copy aria-label="Copy the cd command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
+          <div class="step"><span class="num">3</span><code>./bin/install</code><button class="copy" type="button" data-copy aria-label="Copy the install script command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
           <p class="install-note">makepkg calls sudo itself when it needs to — you don't have to.</p>
         </div>
 
         <div class="install-card">
           <h3>From a release package</h3>
           <p class="sub">Grab the latest .pkg.tar.zst and install it directly, or track updates through pacman.</p>
-          <div class="step"><span class="num">1</span><code>sudo pacman -U omairc-*.pkg.tar.zst</code></div>
-          <div class="step"><span class="num">2</span><code>omarchy pkg add omairc</code></div>
+          <div class="step"><span class="num">1</span><code>sudo pacman -U omairc-*.pkg.tar.zst</code><button class="copy" type="button" data-copy aria-label="Copy the pacman install command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
+          <div class="step"><span class="num">2</span><code>omarchy pkg add omairc</code><button class="copy" type="button" data-copy aria-label="Copy the omarchy pkg command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
           <p class="install-note">The second option works straight from the Omarchy menu — no repo config needed.</p>
         </div>
       </div>
@@ -579,6 +664,74 @@
     </div>
   </div>
 </footer>
+
+<span class="sr-only" role="status" aria-live="polite" id="copy-status"></span>
+
+<script>
+(function () {
+  const status = document.getElementById('copy-status');
+
+  function legacyCopy(text) {
+    const field = document.createElement('textarea');
+    field.value = text;
+    field.setAttribute('readonly', '');
+    field.style.position = 'fixed';
+    field.style.top = '-1000px';
+    document.body.appendChild(field);
+    let copied = false;
+    try {
+      field.select();
+      copied = document.execCommand('copy');
+    } catch (err) {
+      copied = false;
+    }
+    document.body.removeChild(field);
+    return copied;
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(
+        () => true,
+        () => legacyCopy(text),
+      );
+    }
+    return Promise.resolve(legacyCopy(text));
+  }
+
+  function selectCode(code) {
+    const range = document.createRange();
+    range.selectNodeContents(code);
+    const selection = document.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  document.querySelectorAll('.step button[data-copy]').forEach(function (button) {
+    button.addEventListener('click', function () {
+      const code = button.closest('.step').querySelector('code');
+      const text = code ? code.textContent.trim() : '';
+      if (!text) return;
+
+      Promise.resolve(copyText(text)).then(function (copied) {
+        clearTimeout(button.copyTimer);
+        button.classList.toggle('copied', copied);
+        if (!copied) selectCode(code);
+        if (status) {
+          status.textContent = copied
+            ? 'Copied to clipboard'
+            : 'Copy failed. The command is selected, press Ctrl+C.';
+        }
+        if (copied) {
+          button.copyTimer = setTimeout(function () {
+            button.classList.remove('copied');
+          }, 2000);
+        }
+      });
+    });
+  });
+})();
+</script>
 
 </body>
 </html>

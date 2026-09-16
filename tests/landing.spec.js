@@ -21,6 +21,41 @@ test.describe('Omairc landing page', () => {
     await expect(page.getByRole('heading', { name: 'Worth knowing before you switch' })).toHaveCount(0);
   });
 
+  test('a visitor copies the one-line install command', async ({ page, context }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+
+    await page.getByRole('link', { name: 'Get Omairc' }).click();
+    const button = page.getByRole('button', { name: 'Copy the one-line install command' });
+    await expect(button).toBeVisible();
+
+    await button.click();
+
+    await expect(button).toHaveClass(/copied/);
+    await expect(page.getByRole('status')).toHaveText('Copied to clipboard');
+    await expect
+      .poll(() => page.evaluate(() => navigator.clipboard.readText()))
+      .toBe('curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/master/install.sh | sh');
+  });
+
+  test('a visitor copies each install step command', async ({ page, context }) => {
+    await context.grantPermissions(['clipboard-read', 'clipboard-write']);
+
+    await page.getByRole('link', { name: 'Get Omairc' }).click();
+
+    const steps = [
+      ['Copy the git clone command', 'git clone https://github.com/fredimachado/omairc.git'],
+      ['Copy the cd command', 'cd omairc'],
+      ['Copy the install script command', './bin/install'],
+      ['Copy the pacman install command', 'sudo pacman -U omairc-*.pkg.tar.zst'],
+      ['Copy the omarchy pkg command', 'omarchy pkg add omairc'],
+    ];
+
+    for (const [label, command] of steps) {
+      await page.getByRole('button', { name: label }).click();
+      await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(command);
+    }
+  });
+
   test('a visitor jumps between sections from the nav', async ({ page }) => {
     const nav = page.getByRole('navigation');
 
