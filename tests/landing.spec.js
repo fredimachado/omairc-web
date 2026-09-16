@@ -47,7 +47,10 @@ test.describe('Omairc landing page', () => {
   test('a visitor sees a recording of Omairc in the hero', async ({ page }) => {
     const shot = page.getByRole('img', { name: 'Omairc' });
     await expect(shot).toBeVisible();
-    await expect(shot).toHaveAttribute('src', 'omairc-site.gif');
+    await expect(shot).toHaveAttribute(
+      'src',
+      'https://raw.githubusercontent.com/fredimachado/omairc/master/omairc.gif',
+    );
     await expect.poll(async () => shot.evaluate((el) => el.complete && el.naturalWidth > 0)).toBe(true);
   });
 
