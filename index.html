@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Omairc: A dead-simple IRC client for Omarchy</title>
-<meta name="description" content="Omairc is a dead-simple, AI-friendly IRC client for Omarchy, built with Qt Quick and C++. Agents talk to the running window over a socket. Humans use the same binary.">
+<title>Omairc - A dead-simple IRC client for Omarchy</title>
+<meta name="description" content="Omairc is a dead-simple, AI-friendly IRC client for Omarchy, built with Qt Quick and C++. Agents interact with it over the CLI. Humans use the same binary.">
 <link rel="icon" href="omairc.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -302,6 +302,25 @@
   .code-block .prompt{ color: var(--text-faint); }
   .code-block .out{ color: var(--accent-green); }
   .code-block .comment{ color: var(--text-faint); }
+  .agents-skill{
+    margin-top: 40px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .agents-skill h3{
+    margin: 0 0 6px;
+    font-size: 1.05rem;
+  }
+  .agents-skill p{
+    margin: 0;
+    color: var(--text-dim);
+    font-size: 0.93rem;
+  }
+  .agents-skill .step{
+    margin: 16px 0 0;
+  }
 
   /* ---------- features ---------- */
   .feature-list{
@@ -583,7 +602,7 @@
           Built for Omarchy
         </div>
         <h1>A dead-simple IRC client, for humans and their agents.</h1>
-        <p class="lede">Omairc is a small Qt Quick app that runs one window for you and your agent to share. You chat in it. Your agent scripts it over a socket. Nobody has to leave the room.</p>
+        <p class="lede">Omairc is a small Qt Quick app that runs one window for you and your agent to share. You chat in it. Your agent interacts with it over the CLI. Nobody has to leave the room.</p>
         <div class="cta-row">
           <a href="#install" class="btn btn-primary">
             <svg aria-hidden="true"><use href="#icon-download"></use></svg>
@@ -634,6 +653,11 @@
           <div class="l"><span class="prompt">$</span> omairc read --unread</div>
           <div class="l comment">// only what's new since last read</div>
         </div>
+      </div>
+      <div class="agents-skill">
+        <h3>Install the agent skill</h3>
+        <p>Adds the local CLI skill for Cursor, Claude Code, Codex, and other agents the Skills CLI supports. The window must already be running.</p>
+        <div class="step"><span class="num">$</span><code>npx skills add fredimachado/omairc/skills -g</code><button class="copy" type="button" data-copy aria-label="Copy the agent skill install command"><svg class="icon-copy"><use href="#icon-copy"></use></svg><svg class="icon-check"><use href="#icon-check"></use></svg></button></div>
       </div>
     </div>
   </section>

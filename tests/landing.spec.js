@@ -10,7 +10,7 @@ test.describe('Omairc landing page', () => {
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(
       /A dead-simple IRC client, for humans and their agents/,
     );
-    await expect(page.getByText(/You chat in it\. Your agent scripts it over a socket/)).toBeVisible();
+    await expect(page.getByText(/You chat in it\. Your agent interacts with it over the CLI/)).toBeVisible();
 
     await page.getByRole('link', { name: 'Get Omairc' }).click();
 
@@ -78,8 +78,9 @@ test.describe('Omairc landing page', () => {
 
     await nav.getByRole('link', { name: 'Agents' }).click();
     await expect(page).toHaveURL(/#agents$/);
-    await expect(page.getByRole('heading', { name: 'One window, one socket, no second client' })).toBeInViewport();
+    await expect(page.getByRole('heading', { name: 'Agent-ready CLI' })).toBeInViewport();
     await expect(page.getByText('omairc read \'#omarchy\' --since 5m')).toBeVisible();
+    await expect(page.getByText('npx skills add fredimachado/omairc/skills -g')).toBeVisible();
 
     await nav.getByRole('link', { name: 'Features' }).click();
     await expect(page).toHaveURL(/#features$/);
