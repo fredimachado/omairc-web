@@ -1,0 +1,10 @@
+# Cloudflare Pages reads this file to set response headers. It is never served
+# as an asset itself.
+#
+# /install.sh is fetched from the omairc repo at deploy time, and the install
+# note links to it so people can read it before piping it into sh. Pages infers
+# the type from the .sh extension and sends nosniff, so without this override a
+# browser downloads the file instead of showing it.
+/install.sh
+  Content-Type: text/plain; charset=utf-8
+  Content-Disposition: inline

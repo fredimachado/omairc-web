@@ -42,6 +42,18 @@ test.describe('Omairc landing page', () => {
     await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(command);
   });
 
+  test('a visitor reads install.sh from the site rather than GitHub', async ({ page }) => {
+    await page.getByRole('link', { name: 'Get Omairc' }).click();
+
+    const link = page.getByRole('link', { name: 'install.sh', exact: true });
+    await expect(link).toBeVisible();
+
+    // Relative, so it resolves against whatever origin the visitor is on and
+    // stays the same file the one-liner pipes into sh.
+    await expect(link).toHaveAttribute('href', '/install.sh');
+    await expect(link).not.toHaveAttribute('href', /github\.com/);
+  });
+
   test('a visitor copies each install step command', async ({ page, context }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
 

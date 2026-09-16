@@ -31,13 +31,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # The site is plain HTML and one image. List anything new here, or it
-      # will be missing from the upload. install.sh is added by the next step.
+      # The site is plain HTML, one image, and the _headers rules that make
+      # install.sh readable in a browser. List anything new here, or it will be
+      # missing from the upload. install.sh is added by the next step.
       - name: Stage the site
         run: |
           set -euo pipefail
           mkdir -p dist
-          cp index.html omairc.svg dist/
+          cp index.html omairc.svg _headers dist/
 
       # A 404 or a proxy's error page would curl in happily, so check the
       # bytes before they are uploaded as a shell script users pipe into sh.
