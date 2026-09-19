@@ -2,7 +2,7 @@
 
 Landing site for [Omairc](https://github.com/fredimachado/omairc), a small IRC client for [Omarchy](https://omarchy.org).
 
-The site is plain HTML (`index.html`, `omairc.svg`, `_headers`). There is no build step. `install.sh` is not checked in: each deploy fetches the latest copy from the omairc repo so the one-liner always pipes in a current installer.
+The site is plain HTML (`index.html`, `omairc.svg`, `omairc128.png`, `_headers`). There is no build step. `install.sh` is not checked in: each deploy fetches the latest copy from the omairc repo so the one-liner always pipes in a current installer.
 
 Live at [omairc.app](https://omairc.app).
 
