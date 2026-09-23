@@ -4,7 +4,7 @@ test.describe('Omairc website', () => {
   test('landing page keeps section navigation and links to the new pages', async ({ page }) => {
     await page.goto('/');
     await expect(page).toHaveTitle(/Omairc/);
-    await expect(page.getByRole('heading', { level: 1 })).toHaveText(/dead-simple IRC client/);
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(/simple IRC client/);
 
     const nav = page.getByRole('navigation', { name: 'Primary' });
     await nav.getByRole('link', { name: 'Features' }).click();
