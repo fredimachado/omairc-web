@@ -1,0 +1,119 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import '../styles/landing.css';
+
+const features = [
+  ['Keyboard first', 'Jump, search, complete nicks, walk unread messages, and keep a draft in every conversation.'],
+  ['Modern IRCv3', 'SASL, server-time, echo-message, metadata, account tracking, CHATHISTORY, and ZNC playback.'],
+  ['Several networks', 'Keep each network’s channels, DMs, nick, status, and connection state in one window.'],
+  ['Slash commands', 'Messaging, moderation, presence, preferences, services, CTCP, highlights, monitor, and more.'],
+  ['Attention that behaves', 'Unread markers, a session inbox, highlights, mutes, and focused desktop notifications.'],
+  ['History on arrival', 'Combine server history, resumable bouncer playback, and a recent local transcript tail.'],
+  ['Secrets stay secret', 'Use Keychain, Secret Service, or Credential Manager instead of ordinary configuration files.'],
+  ['One process', 'A second launch activates the existing window instead of opening a duplicate IRC connection.'],
+  ['Dressed in your theme', 'Follow the active Omarchy palette and portal text scaling live on Linux.'],
+];
+---
+
+<SiteLayout title="Omairc — A dead-simple IRC client for Omarchy" description="Omairc is a keyboard-first, agent-friendly IRC client for Omarchy, Linux, macOS, and Windows." landing>
+  <main id="top">
+    <section class="hero">
+      <div class="wrap">
+        <div class="hero-inner">
+          <div class="eyebrow"><span class="dot"></span>Built for Omarchy</div>
+          <h1>A dead-simple IRC client, for humans and their agents.</h1>
+          <p class="lede">Omairc is a small Qt Quick app that runs one window for you and your agent to share. You chat in it. Your agent interacts with it over the CLI. Nobody has to leave the room.</p>
+          <div class="actions">
+            <a href="#install" class="button primary">Get Omairc</a>
+            <a href="/docs/" class="button">Read the docs</a>
+            <a href="https://github.com/fredimachado/omairc" target="_blank" rel="noopener" class="button">View source</a>
+          </div>
+        </div>
+        <div class="app-frame"><img src="https://raw.githubusercontent.com/fredimachado/omairc/master/omairc.gif" alt="Omairc showing an IRC conversation" /></div>
+      </div>
+    </section>
+
+    <section id="agents">
+      <div class="wrap">
+        <div class="section-head"><h2>Agent-ready CLI</h2><p>The same binary controls the running window and returns one compact JSON object. Agents can read, discover, or send without another IRC connection or disturbing your selected conversation.</p></div>
+        <div class="split">
+          <div class="copy">
+            <p>Use independent CLI unread cursors, target a specific network, inspect members, and verify uncertain sends before retrying.</p>
+            <div class="chips">{['connections', 'status', 'send', 'conversations', 'read', 'names', 'raise'].map((command) => <span class="chip">{command}</span>)}</div>
+          </div>
+          <div class="terminal">
+            <div class="terminal-line"><span class="prompt">$</span> omairc read '#omarchy' --since 5m</div>
+            <div class="terminal-line comment">// last 5 minutes, as JSON</div>
+            <div class="terminal-line"></div>
+            <div class="terminal-line"><span class="prompt">$</span> omairc send --network libera '#omarchy' \</div>
+            <div class="terminal-line">    "pushed a fix, rerunning ci"</div>
+            <div class="terminal-line ok">{`{"ok":true}`}</div>
+            <div class="terminal-line"></div>
+            <div class="terminal-line"><span class="prompt">$</span> omairc read --unread</div>
+          </div>
+        </div>
+        <div class="skill-card">
+          <h3>Install the agent skill</h3>
+          <p>Teach compatible agents the safe Omairc CLI workflow and JSON contract.</p>
+          <div class="command"><code>npx skills add fredimachado/omairc/skills -g</code><button class="copy-button" type="button" data-copy>Copy</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features">
+      <div class="wrap">
+        <div class="section-head"><h2>Everything you’d want from an IRC client</h2><p>The familiar IRC workflow, without plugin sprawl—and with local automation designed in from the start.</p></div>
+        <div class="feature-grid">{features.map(([title, body]) => <article class="feature"><h3><span>#</span>{title}</h3><p>{body}</p></article>)}</div>
+      </div>
+    </section>
+
+    <section id="install">
+      <div class="wrap">
+        <div class="section-head"><h2>Get it running</h2><p>Use the package repository on Omarchy or another Arch-based system, or download the current Windows and macOS release.</p></div>
+        <div class="install-grid">
+          <article class="install-card primary">
+            <h3>Omarchy and Arch-based Linux</h3><p class="sub">Adds the Omairc pacman repository and installs the latest release.</p>
+            <div class="command"><code class="install-command">curl -fsSL https://omairc.app/install.sh | sh</code><button class="copy-button" type="button" data-copy>Copy</button></div>
+            <p class="install-note">Safe to rerun. <a href="/install.sh" target="_blank" rel="noopener">Read install.sh</a> before piping it, or see the <a href="/docs/getting-started/installation/">full installation guide</a>.</p>
+          </article>
+          <article class="install-card"><h3>Windows</h3><p class="sub">Use the per-user installer or portable x64 archive.</p><a class="text-link" href="https://github.com/fredimachado/omairc/releases/latest">Download the latest release →</a></article>
+          <article class="install-card"><h3>macOS</h3><p class="sub">Install the signed app with Homebrew or a notarized archive.</p><div class="command"><code>brew install --cask fredimachado/omairc/omairc</code><button class="copy-button" type="button" data-copy>Copy</button></div></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="feedback">
+      <div class="wrap">
+        <div class="section-head"><h2>Bugs, ideas, and quick chat</h2><p>Durable reports go on GitHub. For a quick conversation, find us on Libera.</p></div>
+        <div class="actions" style="justify-content:flex-start">
+          <a class="button primary" href="https://github.com/fredimachado/omairc/issues/new?template=bug.yml" target="_blank" rel="noopener">Report a bug</a>
+          <a class="button" href="https://github.com/fredimachado/omairc/issues/new?template=feature.yml" target="_blank" rel="noopener">Suggest something</a>
+          <a class="button" href="https://web.libera.chat/#omairc" target="_blank" rel="noopener">Chat in #omairc</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <span class="sr-only" role="status" aria-live="polite" id="copy-status"></span>
+  <script>
+    const installCommand = document.querySelector('.install-command');
+    if (installCommand && location.origin !== 'null') installCommand.textContent = `curl -fsSL ${location.origin}/install.sh | sh`;
+    document.querySelectorAll('[data-copy]').forEach((button) => button.addEventListener('click', async () => {
+      const code = button.parentElement?.querySelector('code');
+      if (!code) return;
+      try {
+        await navigator.clipboard.writeText(code.textContent?.trim() || '');
+        button.classList.add('copied');
+        button.textContent = 'Copied';
+        const status = document.querySelector('#copy-status');
+        if (status) status.textContent = 'Copied to clipboard';
+        window.setTimeout(() => { button.classList.remove('copied'); button.textContent = 'Copy'; }, 1800);
+      } catch {
+        const range = document.createRange();
+        range.selectNodeContents(code);
+        const selection = window.getSelection();
+        selection?.removeAllRanges(); selection?.addRange(range);
+      }
+    }));
+  </script>
+</SiteLayout>

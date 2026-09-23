@@ -31,14 +31,31 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v7
 
-      # The site is plain HTML, static assets, and the _headers rules that make
-      # install.sh readable in a browser. List anything new here, or it will be
-      # missing from the upload. install.sh is added by the next step.
-      - name: Stage the site
+      - name: Set up Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Check Astro
+        run: npm run check
+
+      - name: Build the site
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: npm run build
+
+      - name: Verify static output
         run: |
           set -euo pipefail
-          mkdir -p dist
-          cp index.html omairc.svg omairc128.png _headers dist/
+          test -f dist/index.html
+          test -f dist/docs/index.html
+          test -f dist/changelog/index.html
+          test -f dist/pagefind/pagefind.js
+          test -f dist/_headers
 
       # A 404 or a proxy's error page would curl in happily, so check the
       # bytes before they are uploaded as a shell script users pipe into sh.

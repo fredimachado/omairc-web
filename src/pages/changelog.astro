@@ -1,0 +1,29 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { getReleases } from '../lib/releases';
+import '../styles/changelog.css';
+
+const { releases, error } = await getReleases();
+const formatDate = (value: string) => new Intl.DateTimeFormat('en', { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(value));
+---
+
+<SiteLayout title="Changelog — Omairc" description="What changed in every Omairc release.">
+  <main class="changelog-main">
+    <div class="wrap">
+      <header class="changelog-intro"><span class="kicker">Release notes</span><h1>Changelog</h1><p>New features, fixes, and platform improvements from GitHub Releases, newest first.</p></header>
+      {releases.length ? (
+        <div class="changelog-layout">
+          <nav class="release-nav" aria-label="Releases"><strong>Versions</strong>{releases.map((release) => <a href={`#v${release.tag}`}>v{release.tag}</a>)}</nav>
+          <div>{releases.map((release) => (
+            <article class="release" id={`v${release.tag}`}>
+              <header class="release-head"><h2>v{release.tag}{release.prerelease && <span class="prerelease">prerelease</span>}</h2><time datetime={release.date}>{formatDate(release.date)}</time></header>
+              {release.name && <h3>{release.name}</h3>}
+              <div class="release-body" set:html={release.bodyHtml}></div>
+              <a class="release-link" href={release.url} target="_blank" rel="noopener">View release on GitHub →</a>
+            </article>
+          ))}</div>
+        </div>
+      ) : <p class="release-error">Release notes could not be loaded{error ? `: ${error}` : '.'} <a class="text-link" href="https://github.com/fredimachado/omairc/releases">View releases on GitHub.</a></p>}
+    </div>
+  </main>
+</SiteLayout>

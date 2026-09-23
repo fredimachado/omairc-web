@@ -1,0 +1,32 @@
+@import './theme.css';
+
+.site-header { position: sticky; top: 0; z-index: 50; background: rgba(26,27,38,.86); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); }
+.site-nav { min-height: 68px; display: flex; align-items: center; gap: 24px; }
+.logo { display: flex; align-items: center; gap: 10px; margin-right: auto; font: 700 1.05rem var(--mono); }
+.logo img { width: 26px; height: 26px; }
+.nav-links { display: flex; align-items: center; gap: 24px; color: var(--text-dim); font-size: .9rem; }
+.nav-links a:hover, .footer-links a:hover { color: var(--text); }
+.search-link { width: 190px; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 10px 8px 13px; border: 1px solid var(--border); border-radius: 8px; background: var(--bg-raised); color: var(--text-dim) !important; }
+.search-link:hover { border-color: var(--text-dim); background: var(--surface); }
+.search-link kbd { border: 1px solid var(--border); border-radius: 5px; padding: 0 6px; color: var(--text-faint); font: .75rem var(--mono); }
+.github-link { display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border: 1px solid var(--border); border-radius: 8px; color: var(--text) !important; }
+.github-link svg { width: 16px; height: 16px; fill: currentColor; }
+.nav-toggle { display: none; width: 40px; height: 40px; border: 1px solid var(--border); border-radius: 8px; background: transparent; color: var(--text); font-size: 1.15rem; }
+.site-footer { border-top: 1px solid var(--border); padding: 36px 0; color: var(--text-faint); font: .84rem var(--mono); }
+.footer-row, .footer-links { display: flex; align-items: center; gap: 22px; }
+.footer-row { justify-content: space-between; }
+.footer-links { color: var(--text-dim); font-family: var(--sans); }
+
+@media (max-width: 920px) {
+  .site-nav { flex-wrap: wrap; padding-block: 13px; }
+  .nav-toggle { display: block; }
+  .nav-links { display: none; flex: 1 0 100%; flex-direction: column; align-items: stretch; gap: 0; padding-top: 8px; border-top: 1px solid var(--border); }
+  .site-header.nav-open .nav-links { display: flex; }
+  .nav-links > a { padding: 10px 0; }
+  .search-link { width: 100%; margin: 6px 0; }
+  .github-link { justify-content: center; }
+}
+
+@media (max-width: 600px) {
+  .footer-row, .footer-links { align-items: flex-start; flex-direction: column; }
+}

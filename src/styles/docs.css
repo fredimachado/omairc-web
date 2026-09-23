@@ -1,0 +1,53 @@
+@import './theme.css';
+
+:root, :root[data-theme='dark'], :root[data-theme='light'] {
+  color-scheme: dark;
+  --sl-color-bg: var(--bg);
+  --sl-color-bg-nav: rgba(26,27,38,.94);
+  --sl-color-bg-sidebar: var(--bg-raised);
+  --sl-color-bg-inline-code: var(--surface);
+  --sl-color-hairline: var(--border);
+  --sl-color-hairline-light: var(--border);
+  --sl-color-text: var(--text);
+  --sl-color-text-accent: var(--accent-cyan);
+  --sl-color-text-invert: var(--bg);
+  --sl-color-gray-1: var(--text);
+  --sl-color-gray-2: var(--text-dim);
+  --sl-color-gray-3: var(--text-dim);
+  --sl-color-gray-4: var(--text-faint);
+  --sl-color-gray-5: var(--border);
+  --sl-color-gray-6: var(--surface);
+  --sl-color-gray-7: var(--bg-raised);
+  --sl-color-black: var(--bg);
+  --sl-color-white: var(--text);
+  --sl-color-accent-low: var(--surface-2);
+  --sl-color-accent: var(--accent-cyan);
+  --sl-color-accent-high: var(--text);
+  --sl-color-blue-low: var(--surface-2);
+  --sl-color-blue-high: var(--accent-cyan);
+  --sl-color-purple-low: var(--surface-2);
+  --sl-color-purple-high: var(--accent-purple);
+  --sl-color-green-low: var(--surface-2);
+  --sl-color-green-high: var(--accent-green);
+  --sl-color-orange-low: var(--surface-2);
+  --sl-color-orange-high: var(--accent-orange);
+  --sl-color-red-low: var(--surface-2);
+  --sl-color-red-high: var(--accent-pink);
+  --sl-font: var(--sans);
+  --sl-font-mono: var(--mono);
+}
+
+header.header { border-bottom-color: var(--border); }
+.site-title { font-family: var(--mono); }
+.search-input, site-search button { background: var(--bg-raised) !important; border-color: var(--border) !important; }
+.content-panel + .content-panel { border-top-color: var(--border); }
+.sl-markdown-content a:not(.sl-link-button) { color: var(--accent-cyan); }
+.sl-markdown-content code { color: var(--accent-orange); }
+.sl-markdown-content pre code { color: inherit; }
+.sl-markdown-content th { color: var(--text); }
+.sl-markdown-content tr { border-color: var(--border); }
+.right-sidebar-panel a[aria-current='true'] { color: var(--accent-cyan); }
+.sidebar-content a[aria-current='page'] {
+  background-color: var(--surface-2) !important;
+  color: var(--accent-cyan) !important;
+}

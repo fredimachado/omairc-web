@@ -1,9 +1,10 @@
 node_modules/
+.astro/
 test-results/
 playwright-report/
 blob-report/
 playwright/.cache/
 
-# Deploy staging. install.sh is fetched from the omairc repo at deploy time, so
-# a copy here would only ever be a stale one.
+# Astro build output. install.sh is fetched from the Omairc repository during
+# deployment, so a local copy here would only ever be stale.
 dist/
