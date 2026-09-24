@@ -52,6 +52,7 @@ For a channel, the right panel shows the online count and members known to Omair
 
 - Click a member to open a direct message.
 - Press `Ctrl+Shift+P` (`Cmd+Shift+P` on macOS) to focus the panel, then use Up/Down and Enter.
+- While that list has focus, `Page Up` / `Page Down` move about one page and `Shift+Page Up` / `Shift+Page Down` move about half a page. `Home` / `End` jump to the first or last nick. `Ctrl+Home` / `Ctrl+End` still jump the transcript (`Cmd` on macOS).
 - Press `Ctrl+Shift+K` (`Cmd+Shift+K` on macOS) to search the current channel's nicks and open one directly.
 
 Away state, service account, standing status, bot marks, and avatars appear only when the network supplies the corresponding information. A member's absence of such a marker is not proof that the account or status does not exist.
@@ -62,6 +63,7 @@ When the Omairc window is unfocused, a mention or direct message can notify you 
 
 ## Common mistakes
 
+- **Page Up moves the member list:** the member panel has focus. Press `Ctrl+L` (`Cmd+L` on macOS) to return to the composer, then page the transcript.
 - **Up/Down changes completion instead of history:** dismiss the completion menu with Escape, then try again.
 - **Find does not locate an old server message:** find only searches transcript lines already loaded.
 - **No members or history appear:** both depend on the selected target and data supplied by the network; Status has no channel roster.

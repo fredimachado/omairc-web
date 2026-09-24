@@ -8,7 +8,7 @@ Omairc has three global preferences for direct messages, peer avatars, and unrea
 ## Open Preferences
 
 1. Open **Connect** with `Ctrl+,` (`Cmd+,` on macOS).
-2. Select the **Preferences** tab. You can use `Ctrl+Tab` / `Ctrl+Shift+Tab` to switch Connect tabs (`Cmd` on macOS).
+2. Select the **Preferences** tab. `Ctrl+Tab` cycles between Connection and Preferences (`Cmd+Tab` on macOS).
 3. Toggle the desired setting. Changes take effect directly; they are not tied to one network profile.
 
 You can also inspect or change them from a conversation or Status composer:

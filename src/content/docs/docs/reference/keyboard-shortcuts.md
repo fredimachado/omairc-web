@@ -28,15 +28,17 @@ Open the in-app sheet with `Ctrl+/`. On macOS, Qt maps `Ctrl` to Command and `Al
 
 ## Write and read
 
+`Page Up`, `Page Down`, and their Shift variants scroll the transcript unless the member list has focus. Those same keys then page the member list. `Ctrl+Home` and `Ctrl+End` always jump the transcript.
+
 | Linux and Windows | macOS | Action |
 |---|---|---|
 | `Ctrl+L` | `Cmd+L` | Focus composer |
 | `Ctrl+C` | `Cmd+C` | Copy selection |
 | `Ctrl+F` | `Cmd+F` | Find in the conversation |
 | `Enter` | `Enter` | Send |
-| `Page Up` / `Page Down` | same | Scroll one page |
-| `Shift+Page Up` / `Shift+Page Down` | same | Scroll half a page |
-| `Ctrl+Home` / `Ctrl+End` | `Cmd+Home` / `Cmd+End` | Top / bottom |
+| `Page Up` / `Page Down` | same | Scroll the transcript one page |
+| `Shift+Page Up` / `Shift+Page Down` | same | Scroll the transcript half a page |
+| `Ctrl+Home` / `Ctrl+End` | `Cmd+Home` / `Cmd+End` | Transcript top / bottom |
 | `Tab` | `Tab` | Complete a nick; in the slash picker, insert the selected command |
 | `Up` / `Down` | same | Walk sent-line history; in the slash picker, move selection |
 | `Escape` | `Escape` | Dismiss the active picker, search, or popup |
@@ -46,7 +48,7 @@ Open the in-app sheet with `Ctrl+/`. On macOS, Qt maps `Ctrl` to Command and `Al
 | Linux and Windows | macOS | Action |
 |---|---|---|
 | `Ctrl+,` | `Cmd+,` | Open Connect |
-| `Ctrl+Tab` / `Ctrl+Shift+Tab` | `Cmd+Tab` / `Cmd+Shift+Tab` | Walk Connect tabs |
+| `Ctrl+Tab` | `Cmd+Tab` | Cycle Connect tabs |
 | `Ctrl+N` | `Cmd+N` | Add network |
 | `Ctrl+Shift+Delete` | `Cmd+Shift+Delete` | Remove network |
 | `Ctrl+Enter` | `Cmd+Enter` | Apply selected network |
@@ -58,6 +60,9 @@ Open the in-app sheet with `Ctrl+/`. On macOS, Qt maps `Ctrl` to Command and `Al
 | `Ctrl+Shift+S` | `Cmd+Shift+S` | Toggle server list |
 | `Ctrl+Shift+M` | `Cmd+Shift+M` | Toggle members panel |
 | `Ctrl+Shift+P` | `Cmd+Shift+P` | Focus members, reopening the panel if needed |
+| `Page Up` / `Page Down` | same | Page the focused member list |
+| `Shift+Page Up` / `Shift+Page Down` | same | Page the focused member list half a page |
+| `Home` / `End` | same | First or last nick while the member list is focused |
 | `Ctrl+/` | `Cmd+/` | Open this shortcut sheet |
 | `Ctrl+Q` | `Cmd+Q` | Quit |
 
