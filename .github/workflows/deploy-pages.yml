@@ -1,13 +1,17 @@
 name: Deploy to Cloudflare Pages
 
-# Manual only. No push or pull request reaches the live site, so a deploy
-# happens exactly when someone runs this workflow from the Actions tab.
+# Every push to main deploys the live site. A newer push cancels the run
+# already in progress. workflow_dispatch stays so the Omairc release workflow
+# can rebuild this site without a commit here.
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 concurrency:
-  group: deploy-pages
-  cancel-in-progress: false
+  group: deploy-pages-${{ github.ref }}
+  cancel-in-progress: true
 
 permissions:
   contents: read
