@@ -56,7 +56,7 @@ See [unread messages, inbox, and mute behavior](/docs/guides/navigation/#unread-
 
 The same three preferences and defaults are available on Arch/Omarchy, Windows, and macOS. Shortcut labels differ: macOS presents `Cmd` and `Option` where Linux and Windows use `Ctrl` and `Alt`.
 
-These preferences do not control platform integrations. Omarchy live-theme watching and portal text scaling are Linux-only. Native desktop notifications are available on Linux and macOS, not Windows. Those differences do not change the `directs`, `avatars`, or `unread` values.
+These preferences do not control platform integrations. Omarchy live-theme watching and portal text scaling are Linux-only. Native desktop notifications are available on Linux, macOS, and Windows; the terminal client notifies on Linux and macOS only. Those differences do not change the `directs`, `avatars`, or `unread` values.
 
 ## Verify a change
 

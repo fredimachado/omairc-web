@@ -29,6 +29,7 @@ export default defineConfig({
             { label: 'Navigation', link: '/docs/guides/navigation/' },
             { label: 'Messaging', link: '/docs/guides/messaging/' },
             { label: 'Preferences', link: '/docs/guides/preferences/' },
+            { label: 'Terminal client', link: '/docs/guides/terminal-client/' },
             { label: 'Notifications and attention', link: '/docs/guides/notifications-and-attention/' },
             { label: 'History and bouncers', link: '/docs/guides/history-and-bouncers/' },
             { label: 'Use Omairc with an agent', link: '/docs/guides/agents/' },

@@ -47,6 +47,16 @@ If you used the repository installer, update through `pacman`:
 sudo pacman -Sy omairc
 ```
 
+## Terminal client
+
+`omairc-tui` is a separate terminal client on the same releases. On Linux or macOS without a package manager:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/master/install-tui.sh | sh
+```
+
+That installs the static binary to `~/.local/bin`. On Arch, the same `[omairc]` repository provides it as `sudo pacman -S omairc-tui`. Windows, Homebrew, and Go installs, plus what the terminal client shares with the desktop app, are covered in [Use the terminal client](/docs/guides/terminal-client/).
+
 ## Windows 10 or later
 
 1. Open the [latest GitHub release](https://github.com/fredimachado/omairc/releases/latest).
@@ -56,7 +66,7 @@ sudo pacman -Sy omairc
 
 For a portable installation, download `omairc-<version>-windows-x64.zip`, extract the whole archive to a writable folder, and run `omairc.exe` there. Keep all extracted files together.
 
-**Expected result:** `omairc.exe` opens the Connect sheet. The native Windows build works, but Windows is not the project's primary platform. Portal text scaling, Omarchy theme watching, and desktop notifications are not implemented on Windows.
+**Expected result:** `omairc.exe` opens the Connect sheet. The native Windows build works, but Windows is not the project's primary platform. Portal text scaling and Omarchy theme watching are not implemented on Windows. The desktop app sends native Windows notifications for mentions and direct messages; the terminal client does not notify on Windows.
 
 :::caution[Do not run the executable from inside the ZIP]
 Extract the complete portable archive first. Running only `omairc.exe` without its packaged Qt files can prevent the application from starting.
@@ -92,6 +102,7 @@ The Homebrew command may eventually become `brew install --cask omairc` if Homeb
 - **The Arch script says it needs `pacman`:** use it only on an Arch-based distribution. Other Linux distributions do not currently have an official binary installation path.
 - **The Arch script refuses to run as root:** rerun it as your normal account; it invokes `sudo` itself.
 - **`omairc` is not found in a terminal after Windows setup:** open a new terminal so it receives the updated `PATH`, or launch Omairc from Start.
+- **`omairc-tui` is not found after the portable install:** `install-tui.sh` writes the binary to `~/.local/bin`; add that directory to `PATH` or run the binary by its full path.
 - **A macOS ZIP does not run on your Mac:** download `arm64` for Apple silicon or `x64` for Intel, and extract the app before opening it.
 
 ## Next step

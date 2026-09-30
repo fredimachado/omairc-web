@@ -9,14 +9,16 @@ Omairc separates ordinary configuration and state from network credentials. Exac
 
 | Data | Storage class | Security boundary |
 |---|---|---|
-| Network profiles, preferences, ignores, highlights, mutes, monitors, open direct messages, and window state | Qt application configuration/preferences | Ordinary same-user configuration; not a secret vault |
-| Server password and NickServ/SASL password | Platform credential store through QtKeychain | macOS Keychain, Linux Secret Service/libsecret, or Windows Credential Manager when available |
+| Network profiles, preferences, ignores, highlights, mutes, monitors, open direct messages, and window state | Qt application configuration/preferences, shared with the terminal client | Ordinary same-user configuration; not a secret vault |
+| Server password and NickServ/SASL password | Platform credential store through QtKeychain, shared with the terminal client | macOS Keychain, Linux Secret Service/libsecret, or Windows Credential Manager when available |
 | Conversation transcripts, playback times, CLI unread cursors, and application warning/error log | Platform application state | Local files/state owned by the user; protect backups and account access |
-| CLI control endpoint | Qt runtime location | Same-user local socket or Windows local named pipe; exists only while the window runs |
+| CLI control endpoint | Desktop app runtime location | Same-user local socket or Windows local named pipe; exists only while the desktop window runs |
 
 `XDG_CONFIG_HOME`, `XDG_STATE_HOME`, and the platform's Qt standard locations can change resolved locations. Package formats also differ. Use diagnostics from the running platform or inspect Qt's application directories; do not copy a path from another operating system. On macOS, Keychain holds secrets while application preferences/state live in the user's Library areas. A Homebrew `--zap` uninstall is intentionally broader than a normal uninstall and removes Omairc profile/log state.
 
-Demo mode is exceptional: `--demo-server` keeps profiles, preferences, transcripts, and geometry in temporary/in-memory storage. On Windows it also redirects settings so the registry is untouched.
+The desktop app and the terminal client use the same configuration, state, and credential layout, so profiles, preferences, and transcripts created in one are available in the other. One exception: the terminal client keeps its ignore, mute, monitor, and highlight lists for the current session only and does not write them to the saved preferences. The terminal client also writes a crash record to `<state>/omairc/omairc-tui.log`, beside the desktop app's `omairc.log`.
+
+Demo mode is exceptional: `--demo-server` keeps profiles, preferences, transcripts, and geometry in temporary/in-memory storage. On Windows it also redirects settings so the registry is untouched. The terminal client's `--demo-server` is likewise ephemeral and never reads or writes your config or transcripts.
 
 ## Credential failure behavior
 

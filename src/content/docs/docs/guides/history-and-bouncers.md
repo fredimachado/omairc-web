@@ -23,7 +23,7 @@ CHATHISTORY is server-controlled and bounded. Missing older messages do not indi
 
 ## Use ZNC playback
 
-Configure the network profile for the ZNC endpoint. Omairc selects an upstream bouncer network by appending the profile's bouncer-network value to the login account in the form expected by ZNC. The value cannot contain a space or slash. Use `/znc <text>` to send a command to `*status`; replies remain in Status and do not open a direct message.
+Point the network profile at the ZNC endpoint. The Connect sheet does not currently expose a separate bouncer-network field. When the stored profile carries a bouncer-network value, Omairc appends it to the login account in the form ZNC expects (`account/network`); that value cannot contain a space or slash. Use `/znc <text>` to send a command to `*status`; replies remain in Status and do not open a direct message.
 
 With Omairc 1.0.0, when ZNC offers `znc.in/playback` with `batch`, Omairc requests it and sends `ZNC *playback PLAY` after registration. It starts each target from the newest stored server-time, or `0` on first attach. A channel may request `PLAY` again after self-join until a playback batch for it has been retained.
 

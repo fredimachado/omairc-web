@@ -46,6 +46,17 @@ When new lines arrive while you are scrolled up, the scroll-down chip remains av
 
 Omairc can show recent locally stored lines after restart. It also requests channel history or ZNC playback when the connected server advertises the required capability. This means the amount of older history differs between networks; Omairc cannot retrieve history a server does not offer.
 
+## Open a link from the transcript
+
+Press `Ctrl+Shift+O` (`Cmd+Shift+O` on macOS) to list the `http` and `https` links in the current transcript, newest first. Type to filter the list, use Up/Down to select, and press Enter to open the link in your browser or the system handler.
+
+- The sheet reads the lines already loaded in the selected conversation or Status, the same scope as find. Links in older server history that Omairc has not loaded do not appear.
+- Event and **New messages** rows are skipped in a conversation transcript.
+- On Status, an invite row joins the channel you were invited to instead of opening a URL.
+- Only `http` and `https` are offered. Other schemes are not opened.
+
+Press Escape to close the sheet without opening anything.
+
 ## Use the member panel
 
 For a channel, the right panel shows the online count and members known to Omairc. Click the **PEOPLE** control in the conversation header, or press `Ctrl+Shift+M` (`Cmd+Shift+M` on macOS), to show or hide it.
@@ -59,7 +70,7 @@ Away state, service account, standing status, bot marks, and avatars appear only
 
 ## Notifications and attention
 
-When the Omairc window is unfocused, a mention or direct message can notify you on Linux or macOS. Windows desktop notifications are not currently implemented. Muting and the [inbox/unread rules](/docs/guides/navigation/#unread-messages-the-inbox-and-mutes) determine how other background activity asks for attention.
+When the Omairc window is unfocused, a mention or direct message can notify you on Linux, macOS, or Windows. The terminal client notifies on Linux and macOS but not Windows. Muting and the [inbox/unread rules](/docs/guides/navigation/#unread-messages-the-inbox-and-mutes) determine how other background activity asks for attention.
 
 ## Common mistakes
 
@@ -67,7 +78,7 @@ When the Omairc window is unfocused, a mention or direct message can notify you 
 - **Up/Down changes completion instead of history:** dismiss the completion menu with Escape, then try again.
 - **Find does not locate an old server message:** find only searches transcript lines already loaded.
 - **No members or history appear:** both depend on the selected target and data supplied by the network; Status has no channel roster.
-- **A notification did not appear on Windows:** native desktop notification support is currently Linux/macOS only.
+- **A notification did not appear on Windows:** the desktop app sends native Windows notifications, but Focus Assist, notification settings, or an app permission can suppress them. The terminal client does not send Windows notifications at all.
 
 ## Next steps
 

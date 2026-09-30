@@ -5,6 +5,8 @@ description: Complete Omairc keyboard shortcut reference, including the keys sho
 
 Open the in-app sheet with `Ctrl+/`. On macOS, Qt maps `Ctrl` to Command and `Alt` to Option, so Omairc displays **Cmd** and **Option**. `Shift`, arrow keys, and the physical key names are unchanged.
 
+The terminal client uses the same map, plus `Alt+U` to jump to the first new message. See [Use the terminal client](/docs/guides/terminal-client/) for the differences.
+
 ## Move
 
 | Linux and Windows | macOS | Action |
@@ -21,6 +23,7 @@ Open the in-app sheet with `Ctrl+/`. On macOS, Qt maps `Ctrl` to Command and `Al
 | Linux and Windows | macOS | Action |
 |---|---|---|
 | `Ctrl+K` | `Cmd+K` | Jump to conversation |
+| `Ctrl+Shift+O` | `Cmd+Shift+O` | Open a link from the current transcript |
 | `Ctrl+Shift+K` | `Cmd+Shift+K` | Jump to nick |
 | `Ctrl+Shift+A` | `Cmd+Shift+A` | Open Inbox |
 | ``Ctrl+` `` | ``Cmd+` `` | Open Status |
@@ -64,7 +67,12 @@ Open the in-app sheet with `Ctrl+/`. On macOS, Qt maps `Ctrl` to Command and `Al
 | `Shift+Page Up` / `Shift+Page Down` | same | Page the focused member list half a page |
 | `Home` / `End` | same | First or last nick while the member list is focused |
 | `Ctrl+/` | `Cmd+/` | Open this shortcut sheet |
+| `Ctrl+Shift+/` | `Cmd+Shift+/` | Open About |
 | `Ctrl+Q` | `Cmd+Q` | Quit |
+
+## Windows alternates
+
+The Windows build of the desktop app also binds `Ctrl+]` to open Connect and `Ctrl+PgDn` to cycle Connect tabs, alongside `Ctrl+,` and `Ctrl+Tab`. The terminal client has its own set of Windows Terminal alternates; see [Use the terminal client](/docs/guides/terminal-client/#windows-terminal-chords).
 
 ## Related
 

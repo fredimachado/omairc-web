@@ -11,11 +11,11 @@ Omairc separates visual unread state from events that need attention. Use unread
 |---|---|---|
 | Unread count and **New messages** mark | Live chat that arrived while a conversation was not selected, or while its open window was unfocused | Reading/selecting in the GUI; transcript position follows the preference |
 | Mention badge | Your nick or a configured highlight in an unmuted conversation | GUI attention flow |
-| Session inbox | Background mentions, highlights, direct messages, invites, monitored-nick online edges, and self-kicks | Activating its row or selecting the matching sidebar conversation |
+| Session inbox | Background mentions and highlights (including inside direct messages), invites, monitored-nick online edges, and self-kicks | Activating its row, dismissing it with Delete, or selecting the matching sidebar conversation |
 | Desktop notification | Immediate out-of-window attention | Clicking it raises Omairc and opens or creates the matching conversation |
 | CLI unread cursor | Agent/terminal polling | `omairc read --unread`; independent of every GUI signal |
 
-Open the inbox with `Ctrl+Shift+A`. **Open conversations at unread** controls whether switching to a different conversation lands at its New messages marker instead of the bottom; it does not change what counts as unread. Use `/pref unread on` or the Preferences toggle. The current release defaults this preference on.
+Open the inbox with `Ctrl+Shift+A`. Move with Up/Down, then press Enter to activate a row or Delete to dismiss it without opening its conversation. **Open conversations at unread** controls whether switching to a different conversation lands at its New messages marker instead of the bottom; it does not change what counts as unread. Use `/pref unread on` or the Preferences toggle. The current release defaults this preference on.
 
 Replay and restored local logs are muted backlog. They do not increment unread or mention badges and do not create notifications or inbox rows.
 
@@ -58,7 +58,7 @@ The list persists per network and is resubscribed after server feature discovery
 
 ## Desktop and platform boundaries
 
-Desktop notifications are implemented on Linux through the freedesktop notification service and on macOS through UserNotifications. Linux delivery requires an available session D-Bus notification service and can no-op when the session address is unusable. macOS asks for user authorization. Notifications are not currently implemented on Windows. Omarchy live-theme watching and portal text scaling are Linux-only.
+Desktop notifications are implemented on Linux through the freedesktop notification service, on macOS through UserNotifications, and on Windows through native toast notifications. Linux delivery requires an available session D-Bus notification service and can no-op when the session address is unusable. macOS asks for user authorization. On Windows, Omairc registers a Start Menu shortcut for toast delivery so clicking a toast can reopen the window; if that shortcut cannot be written, Windows toasts do not appear. The terminal client notifies on Linux and macOS only. Omarchy live-theme watching and portal text scaling are Linux-only.
 
 Notifications are generated only while the window is unfocused for mentions and direct messages; mutes suppress them. Your desktop can additionally block notifications through its own permission, focus, or do-not-disturb settings. Topics, notification bodies, and Status remain plain text.
 

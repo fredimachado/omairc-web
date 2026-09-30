@@ -3,7 +3,7 @@ title: Use Omairc with an agent
 description: Install the Omairc agent skill and safely read or send IRC through the local CLI.
 ---
 
-Omairc's bundled agent skill teaches an agent to control an **already-running** Omairc window. The CLI uses a same-user local socket; it does not log in to IRC again, change the selected conversation, or provide a remote API.
+Omairc's bundled agent skill teaches an agent to control an **already-running Omairc desktop window**. The CLI uses a same-user local socket; it does not log in to IRC again, change the selected conversation, or provide a remote API. The terminal client (`omairc-tui`) is a separate IRC session and does not answer these commands.
 
 ## Install the skill
 
@@ -75,6 +75,7 @@ The cursor is shared by agents and terminals for the same local user, per networ
 - `names` snapshots the current member panel; it does not issue a new IRC `NAMES` request.
 - A target must already exist in the window. The CLI does not create a channel or direct message.
 - Run `raise` only when the user asked to activate the existing window.
+- The control socket belongs to the desktop window. Do not expect it to control the terminal client, which runs its own connection.
 - Keep the local runtime directory private. Same-user socket checks are a local boundary, not a reason to run untrusted software under your account.
 
 For local data and credential boundaries, see [Security and storage](/docs/concepts/security-and-storage/). If the CLI cannot find the window, follow [Troubleshooting](/docs/troubleshooting/).

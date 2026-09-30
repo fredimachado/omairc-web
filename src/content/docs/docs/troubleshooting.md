@@ -1,6 +1,6 @@
 ---
 title: Troubleshooting Omairc
-description: Diagnose Omairc GUI, CLI, connection, send, storage, notification, theme, avatar, typing, LIST, and macOS bundle problems in order.
+description: Diagnose Omairc GUI, terminal client, CLI, connection, send, storage, notification, theme, avatar, typing, LIST, and macOS bundle problems in order.
 ---
 
 Start with the narrowest observable failure. Do not delete profiles, logs, or credential entries first: that removes evidence and can trigger duplicate history. Status is the first place to inspect for network and command failures; the application warning/error log is the next step.
@@ -65,7 +65,19 @@ Never work around a TLS certificate failure by disabling TLS unless you understa
 2. Test with a live mention or direct message while the window is unfocused. Replay intentionally does not alert.
 3. Check `/muted`, `/highlights`, and `/monitored`; mutes suppress mention attention, and reconnect MONITOR hydration is quiet.
 4. On Linux, check desktop notification permissions, do-not-disturb, and a working D-Bus session. An invalid session-bus address makes notification integration no-op rather than block.
-5. On macOS, check Omairc's notification authorization in System Settings. Notifications are not currently implemented on Windows. See [Notifications and attention](/docs/guides/notifications-and-attention/#desktop-and-platform-boundaries).
+5. On macOS, check Omairc's notification authorization in System Settings. On Windows, check Focus Assist and the app's notification settings, and confirm the app's Start Menu shortcut exists: Windows toasts, and reopening the window from a toast click, depend on it. The terminal client does not notify on Windows. See [Notifications and attention](/docs/guides/notifications-and-attention/#desktop-and-platform-boundaries).
+
+## The terminal client does not start, notify, or follow the theme
+
+1. Confirm the release carries `omairc-tui` assets and that `omairc-tui --version` runs. See [Use the terminal client](/docs/guides/terminal-client/) for the install paths.
+2. If the colors do not match Omarchy, remember that live `colors.toml` watching is Linux-only; elsewhere the client uses a fixed dark palette.
+3. If notifications do not appear, remember the terminal client notifies on Linux and macOS only, and the macOS path needs `osascript` available.
+4. If it crashed, read `<state>/omairc/omairc-tui.log`, beside the desktop app's `omairc.log`.
+5. Do not run the desktop app and the terminal client on the same network at once; the server can reject, disconnect, or rename the duplicate nick.
+
+## A nick's color changed after an upgrade
+
+Per-nick colors are assigned by hashing the nick into a fixed palette. That palette grew from five hue families to eight, so a nick's assigned color can change once when you first run the release that added the new families. The color is only a visual identifier; nothing about the account or messages changes.
 
 ## Theme or text scaling does not follow the desktop
 

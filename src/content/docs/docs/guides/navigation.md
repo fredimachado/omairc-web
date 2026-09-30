@@ -43,9 +43,9 @@ These three signals serve different purposes:
 
 - **Unread badges** count live chat that arrived while a conversation was not selected. Chat in the open conversation also becomes unread while the window is unfocused. Server replay into an already open conversation does not create ordinary unread badges.
 - The **New messages** marker identifies the first unread live line in a transcript. With [Open conversations at unread](/docs/guides/preferences/#open-conversations-at-unread) enabled, switching conversations lands at this marker instead of the bottom. Status always follows the end.
-- The session **inbox** collects actionable background events: mentions, configured highlight words, direct messages, channel invites, monitored users coming online, and being kicked. Its `inbox` label and count appear by your identity in the sidebar footer.
+- The session **inbox** collects actionable background events: mentions, configured highlight words, channel invites, monitored users coming online, and being kicked. A plain direct message does not add a row, but a mention or highlight inside one does. Its `inbox` label and count appear by your identity in the sidebar footer.
 
-Open the inbox with `Ctrl+Shift+A` (`Cmd+Shift+A` on macOS), move with Up/Down, and press Enter to activate an item. Selecting the corresponding conversation consumes its related inbox rows. The inbox is a session waiting list, not permanent message storage.
+Open the inbox with `Ctrl+Shift+A` (`Cmd+Shift+A` on macOS), move with Up/Down, and press Enter to activate an item. Press Delete (or use the row's delete control) to dismiss a row without opening it. Selecting the corresponding conversation consumes its related inbox rows. The inbox is a session waiting list, not permanent message storage.
 
 ### Mute a noisy conversation
 

@@ -52,6 +52,7 @@ Omairc saves passwords in the platform credential store when available: Secret S
 ## Common mistakes
 
 - **Apply remains unavailable:** Host, Port, and Nick are required. A nick, username, real name, or autojoin entry that cannot be sent is also rejected with a message in the sheet.
+- **Apply reports that the profile could not be saved and the sheet stays open:** the settings file was not writable. Fix the config location or its permissions, then apply again; the sheet does not close on a failed save or remove.
 - **The host is wrong:** enter `irc.example.net`, not `ircs://irc.example.net:6697`.
 - **The password is in the wrong field:** use NickServ password for the normal services account secret; reserve Server password for a server/bouncer `PASS` unless your network tells you otherwise.
 - **You expected the display name to select a different server:** Name is only the label; Host controls the destination.
