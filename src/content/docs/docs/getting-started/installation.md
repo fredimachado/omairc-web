@@ -49,7 +49,11 @@ sudo pacman -Sy omairc
 
 ## Terminal client
 
-`omairc-tui` is a separate terminal client on the same releases. On Linux or macOS without a package manager:
+`omairc-tui` is a separate terminal client on the same releases:
+
+![The Omairc terminal client showing a channel's messages, member list, and input prompt](https://raw.githubusercontent.com/fredimachado/omairc/master/tui/omairc-tui.gif)
+
+On Linux or macOS without a package manager:
 
 ```sh
 curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/master/install-tui.sh | sh
