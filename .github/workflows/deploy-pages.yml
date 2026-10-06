@@ -22,7 +22,7 @@ env:
   PAGES_PROJECT: omairc-web
   # The installer published in the omairc repo, fetched fresh on every deploy
   # so the site never serves a checked-in copy that has fallen behind.
-  INSTALL_URL: https://raw.githubusercontent.com/fredimachado/omairc/master/install.sh
+  INSTALL_URL: https://raw.githubusercontent.com/fredimachado/omairc/main/install.sh
 
 defaults:
   run:

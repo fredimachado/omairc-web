@@ -10,7 +10,7 @@ Install the current Omairc release for your platform, then launch the window onc
 The supported installer requires `pacman` and `sudo`, and works on Omarchy, Arch Linux, Manjaro, and EndeavourOS. Run it as your regular user, **not** as root:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/master/install.sh | sh
+curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/main/install.sh | sh
 ```
 
 The script adds an `[omairc]` repository to `/etc/pacman.conf` and installs the `omairc` package. It is safe to run again: an existing repository entry is not duplicated and Omairc is upgraded to the latest release.
@@ -51,12 +51,12 @@ sudo pacman -Sy omairc
 
 `omairc-tui` is a separate terminal client on the same releases:
 
-![The Omairc terminal client showing a channel's messages, member list, and input prompt](https://raw.githubusercontent.com/fredimachado/omairc/master/tui/omairc-tui.gif)
+![The Omairc terminal client showing a channel's messages, member list, and input prompt](https://raw.githubusercontent.com/fredimachado/omairc/main/tui/omairc-tui.gif)
 
 On Linux or macOS without a package manager:
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/master/install-tui.sh | sh
+curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/main/install-tui.sh | sh
 ```
 
 That installs the static binary to `~/.local/bin`. On Arch, the same `[omairc]` repository provides it as `sudo pacman -S omairc-tui`. Windows, Homebrew, and Go installs, plus what the terminal client shares with the desktop app, are covered in [Use the terminal client](/docs/guides/terminal-client/).

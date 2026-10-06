@@ -73,7 +73,7 @@ async function loadReleases(): Promise<{ releases: Release[]; error?: string }> 
 async function loadChangelog() {
   const sections = new Map<string, string>();
   try {
-    const response = await fetch('https://raw.githubusercontent.com/fredimachado/omairc/master/CHANGELOG.md');
+    const response = await fetch('https://raw.githubusercontent.com/fredimachado/omairc/main/CHANGELOG.md');
     if (!response.ok) return sections;
     const source = await response.text();
     const releasePattern = /^## \[([^\]]+)] - \d{4}-\d{2}-\d{2}\s*$([\s\S]*?)(?=^## \[|(?![\s\S]))/gm;

@@ -20,7 +20,7 @@ These installs need a release that carries `omairc-tui` assets, so check the [la
 ### Linux or macOS without a package manager
 
 ```sh
-curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/master/install-tui.sh | sh
+curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/main/install-tui.sh | sh
 ```
 
 `install-tui.sh` resolves the latest release, downloads the static binary for your OS and architecture, checks its `--version`, and installs it to `~/.local/bin`. Re-run it to upgrade. The same script is a release asset:
