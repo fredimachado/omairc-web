@@ -3,7 +3,7 @@ title: Create your first connection
 description: Fill in Omairc's first-run Connect sheet, handle passwords securely, and verify the connection.
 ---
 
-On first launch, Omairc opens a mandatory Connect sheet with a suggested Libera Chat profile: `irc.libera.chat`, port `6697`, TLS enabled, and `#omarchy` in Autojoin. Supply your identity and apply the profile to connect.
+On first launch, Omairc opens a mandatory Connect sheet with a suggested Freenode profile: `chat.freenode.net`, port `6697`, TLS enabled, and `#omarchy` in Autojoin. Supply your identity and apply the profile to connect.
 
 ## Before you connect
 
@@ -21,9 +21,9 @@ Do not disable TLS merely to work around a failed connection. Confirm the host, 
 
 ## Fill in the profile
 
-1. In **Name**, enter a label for the network, such as `Libera Chat`. This label is shown in the sidebar; it does not change the server address. If left empty, Omairc uses the host as the display name.
-2. In **Host**, enter only the server hostname, such as `irc.libera.chat`. Do not include `ircs://` or a port.
-3. Enter the **Port**. `6697` is the suggested TLS port for Libera Chat. Use the value supplied by your network.
+1. In **Name**, enter a label for the network, such as `Freenode`. This label is shown in the sidebar; it does not change the server address. If left empty, Omairc uses the host as the display name.
+2. In **Host**, enter only the server hostname, such as `chat.freenode.net`. Do not include `ircs://` or a port.
+3. Enter the **Port**. `6697` is the suggested TLS port for Freenode. Use the value supplied by your network.
 4. Leave **TLS** on when the server offers a TLS endpoint.
 5. Enter your **Nick**. This is the name people see in chat and is required.
 6. Optionally enter **Username** and **Real name**. When blank, Omairc uses the nick for the corresponding registration value.
