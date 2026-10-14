@@ -29,7 +29,7 @@ h1 { margin: 0 0 22px; font-size: clamp(2.3rem, 4.6vw, 3.3rem); line-height: 1.1
 .skill-card h3 { margin: 0 0 5px; }
 .skill-card p { margin: 0 0 15px; color: var(--text-dim); }
 .command { display: flex; align-items: center; gap: 12px; min-width: 0; }
-.command code { color: var(--accent-cyan); font: .82rem var(--mono); overflow-wrap: anywhere; }
+.command code { color: var(--accent-cyan); font: .82rem var(--mono); overflow-wrap: break-word; }
 .copy-button { margin-left: auto; flex: 0 0 auto; padding: 7px 10px; border: 1px solid var(--border); border-radius: 7px; background: transparent; color: var(--text-dim); cursor: pointer; }
 .copy-button:hover { color: var(--text); background: var(--surface); }
 .copy-button.copied { color: var(--accent-green); border-color: rgba(158,206,106,.45); }
@@ -43,6 +43,8 @@ h1 { margin: 0 0 22px; font-size: clamp(2.3rem, 4.6vw, 3.3rem); line-height: 1.1
 .install-card.primary { grid-column: 1 / -1; border-color: rgba(125,207,255,.42); background: linear-gradient(180deg, rgba(125,207,255,.07), transparent 65%), var(--bg-raised); }
 .install-card h3 { margin: 0 0 4px; }
 .install-card .sub { margin: 0 0 18px; color: var(--text-faint); font-size: .86rem; }
+.command-label { margin: 0 0 8px; color: var(--text-dim); font: .78rem var(--mono); }
+.command + .command-label { margin-top: 16px; }
 .install-card .command + .command { margin-top: 12px; }
 .install-note { margin: 18px 0 0; color: var(--text-dim); font-size: .9rem; }
 .install-note a, .text-link { color: var(--accent-cyan); text-decoration: underline; text-underline-offset: 3px; }

@@ -1,31 +1,45 @@
 ---
 title: Install Omairc
-description: Install Omairc on Omarchy or Arch Linux, Windows, and macOS, then verify that it starts.
+description: Install the official Omairc package on Omarchy Edge, use install.sh on other channels until the next Omarchy release, and install on Windows and macOS.
 ---
 
 Install the current Omairc release for your platform, then launch the window once before following the connection guide.
 
 ## Omarchy and Arch-based Linux
 
-The supported installer requires `pacman` and `sudo`, and works on Omarchy, Arch Linux, Manjaro, and EndeavourOS. Run it as your regular user, **not** as root:
+### Omarchy Edge
 
-```sh
-curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/main/install.sh | sh
-```
-
-The script adds an `[omairc]` repository to `/etc/pacman.conf` and installs the `omairc` package. It is safe to run again: an existing repository entry is not duplicated and Omairc is upgraded to the latest release.
-
-On Omarchy, you can instead install the release package through Omarchy:
+Omairc is an official Omarchy package on the Edge channel. The package is built against that channel's Qt, and upgrades arrive with the usual Omarchy package updates:
 
 ```sh
 omarchy pkg add omairc
 ```
 
-Or download `omairc-*.pkg.tar.zst` from the [latest GitHub release](https://github.com/fredimachado/omairc/releases/latest) and install that exact file:
+**Expected result:** `omairc` is installed from Omarchy's package set.
+
+### Omarchy stable, Omarchy rc, and other Arch-based systems
+
+The official package stays on the Edge channel until the next Omarchy release. On Omarchy stable, Omarchy rc, Arch Linux, Manjaro, and EndeavourOS, use the installer. It requires `pacman` and `sudo`. Run it as your regular user, **not** as root:
+
+```sh
+curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/main/install.sh | sh
+```
+
+The script adds an `[omairc]` repository to `/etc/pacman.conf` and installs the `omairc` package from the latest GitHub release. It is safe to run again: an existing repository entry is not duplicated and Omairc is upgraded to the latest release. The same script is also a release asset:
+
+```sh
+curl -fsSL https://github.com/fredimachado/omairc/releases/latest/download/install.sh | sh
+```
+
+You can also download `omairc-*.pkg.tar.zst` from the [latest GitHub release](https://github.com/fredimachado/omairc/releases/latest) and install that exact file:
 
 ```sh
 sudo pacman -U omairc-*.pkg.tar.zst
 ```
+
+**Expected result:** `pacman` reports that `omairc` is installed.
+
+### Launch
 
 Launch Omairc from the application menu or run:
 
@@ -39,9 +53,11 @@ omairc
 Live Omarchy theme watching, desktop text scaling through the portal, and Linux desktop notifications are Linux-only integrations. They require a working desktop portal/session bus; they do not describe Windows or macOS behavior.
 :::
 
-### Update on Arch
+### Update
 
-If you used the repository installer, update through `pacman`:
+On Omarchy Edge, update Omairc with the usual Omarchy package updates.
+
+If you installed from the `[omairc]` repository, update through `pacman`:
 
 ```sh
 sudo pacman -Sy omairc
@@ -59,7 +75,7 @@ On Linux or macOS without a package manager:
 curl -fsSL https://raw.githubusercontent.com/fredimachado/omairc/main/install-tui.sh | sh
 ```
 
-That installs the static binary to `~/.local/bin`. On Arch, the same `[omairc]` repository provides it as `sudo pacman -S omairc-tui`. Windows, Homebrew, and Go installs, plus what the terminal client shares with the desktop app, are covered in [Use the terminal client](/docs/guides/terminal-client/).
+That installs the static binary to `~/.local/bin`. The official Omarchy Edge package does not include `omairc-tui`. After `install.sh` configures the `[omairc]` repository, install the terminal client with `sudo pacman -S omairc-tui`. Windows, Homebrew, and Go installs, plus what the terminal client shares with the desktop app, are covered in [Use the terminal client](/docs/guides/terminal-client/).
 
 ## Windows 10 or later
 
@@ -103,6 +119,7 @@ The Homebrew command may eventually become `brew install --cask omairc` if Homeb
 
 ## Common installation problems
 
+- **You are on Omarchy stable or rc:** `omarchy pkg add omairc` installs the official package on the Edge channel. Use `install.sh` on stable, rc, and other Arch-based systems until the next Omarchy release.
 - **The Arch script says it needs `pacman`:** use it only on an Arch-based distribution. Other Linux distributions do not currently have an official binary installation path.
 - **The Arch script refuses to run as root:** rerun it as your normal account; it invokes `sudo` itself.
 - **`omairc` is not found in a terminal after Windows setup:** open a new terminal so it receives the updated `PATH`, or launch Omairc from Start.

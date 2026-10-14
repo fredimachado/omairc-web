@@ -20,11 +20,15 @@ test.describe('Omairc website', () => {
   test('copy controls copy their adjacent commands', async ({ page, context }) => {
     await context.grantPermissions(['clipboard-read', 'clipboard-write']);
     await page.goto('/#install');
-    const command = `curl -fsSL ${new URL(page.url()).origin}/install.sh | sh`;
-    await expect(page.locator('code.install-command')).toHaveText(command);
-    await page.locator('.install-card.primary').getByRole('button', { name: 'Copy' }).click();
+    const script = `curl -fsSL ${new URL(page.url()).origin}/install.sh | sh`;
+    const primary = page.locator('.install-card.primary');
+    await expect(primary.locator('code').first()).toHaveText('omarchy pkg add omairc');
+    await expect(primary.locator('code.install-command')).toHaveText(script);
+    await primary.getByRole('button', { name: 'Copy Omarchy Edge command' }).click();
     await expect(page.getByRole('status')).toHaveText('Copied to clipboard');
-    await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(command);
+    await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe('omarchy pkg add omairc');
+    await primary.getByRole('button', { name: 'Copy install script command' }).click();
+    await expect.poll(() => page.evaluate(() => navigator.clipboard.readText())).toBe(script);
   });
 
   test('docs expose navigation and Pagefind search', async ({ page }) => {

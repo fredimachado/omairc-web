@@ -33,6 +33,8 @@ Read `install-tui.sh` before piping it if you prefer.
 
 ### Arch and Omarchy
 
+The official Omarchy Edge package installs the desktop client. `omairc-tui` stays a separate package.
+
 Once the `[omairc]` pacman repository is configured (see [Install Omairc](/docs/getting-started/installation/)):
 
 ```sh
